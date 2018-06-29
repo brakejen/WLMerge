@@ -1,0 +1,7 @@
+﻿2018-06-28
+1.0.0.0
+
+- First version 
+- Sortable, colorized and clickable columns
+- Drag'n'drop in addition to browse files
+- Multiplier dialog when adding
