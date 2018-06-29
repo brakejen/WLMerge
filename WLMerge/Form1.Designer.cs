@@ -35,7 +35,6 @@
             this.buttonExport = new System.Windows.Forms.Button();
             this.buttonClear = new System.Windows.Forms.Button();
             this.dataGridViewItems = new System.Windows.Forms.DataGridView();
-            this.openFileDialogXml = new System.Windows.Forms.OpenFileDialog();
             this.iTEMIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewLinkColumn();
             this.cOLORDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.mINQTYDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -43,6 +42,7 @@
             this.nOTIFYDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rEMARKSDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.iNVENTORYITEMBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.openFileDialogXml = new System.Windows.Forms.OpenFileDialog();
             this.tableLayoutPanelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewItems)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iNVENTORYITEMBindingSource)).BeginInit();
@@ -144,14 +144,9 @@
             this.dataGridViewItems.Size = new System.Drawing.Size(643, 259);
             this.dataGridViewItems.TabIndex = 1;
             this.dataGridViewItems.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewItems_CellContentClick);
+            this.dataGridViewItems.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewItems_CellDoubleClick);
             this.dataGridViewItems.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridViewItems_CellFormatting);
             this.dataGridViewItems.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridViewItems_RowsAdded);
-            // 
-            // openFileDialogXml
-            // 
-            this.openFileDialogXml.Filter = "XML files|*.xml";
-            this.openFileDialogXml.Multiselect = true;
-            this.openFileDialogXml.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialogXml_FileOk);
             // 
             // iTEMIDDataGridViewTextBoxColumn
             // 
@@ -193,7 +188,13 @@
             // 
             // iNVENTORYITEMBindingSource
             // 
-            this.iNVENTORYITEMBindingSource.DataSource = typeof(WLMerge.INVENTORYITEM);
+            this.iNVENTORYITEMBindingSource.DataSource = typeof(WLMerge.InventoryItem);
+            // 
+            // openFileDialogXml
+            // 
+            this.openFileDialogXml.Filter = "XML files|*.xml";
+            this.openFileDialogXml.Multiselect = true;
+            this.openFileDialogXml.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialogXml_FileOk);
             // 
             // FormMain
             // 

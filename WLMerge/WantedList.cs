@@ -5,20 +5,34 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace WLMerge
-{
-    
-    // NOTE: Generated code may require at least .NET Framework 4.5 or .NET Core/Standard 2.0.
-    /// <remarks/>
-    [System.SerializableAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace = "", IsNullable = false)]
-    public partial class INVENTORY
+{    
+    [Serializable()]
+    [DesignerCategory("code")]
+    [XmlType(AnonymousType = true)]
+    [XmlRoot(Namespace = "", IsNullable = false, ElementName = "INVENTORY" )]
+    public partial class Inventory
     {
+        public enum ItemProperty
+        {
+            ITEMTYPE = 0,
+            ITEMID = 1,
+            COLOR = 2,
+            MAXPRICE = 3,
+            MINQTY = 4,
+            QTYFILLED = 5,
+            CONDITION = 6,
+            REMARKS = 7,
+            NOTIFY = 8,
+            WANTEDSHOW = 9,
+            WANTEDLISTID = 10,
+
+        }
+
         /// <summary>
         /// Write this INVENTORY to a string. 
         /// </summary>
@@ -26,7 +40,7 @@ namespace WLMerge
         {
             using (StringWriter textWriter = new StringWriter())
             {
-                new XmlSerializer(typeof(INVENTORY)).Serialize(textWriter, this);
+                new XmlSerializer(typeof(Inventory)).Serialize(textWriter, this);
                 return textWriter.ToString();
             }
         }
@@ -38,140 +52,147 @@ namespace WLMerge
         /// <param name="path">Full path to the file, including filename</param>
         /// <param name="multiplier"></param>
         /// <returns>New INVENTORY with items from XML file in it</returns>
-        public static INVENTORY FromXmlFile(string path, int multiplier)
+        public static Inventory FromXmlFile(string path, int multiplier)
         {
             var d = XDocument.Load(path);
 
             var items = d.Root.Elements("ITEM")
-                .Select(x => new INVENTORYITEM
+                .Select(x => new InventoryItem
                 {
-                    ITEMTYPE = x.Element("ITEMTYPE").Value,
-                    ITEMID = x.Element("ITEMID").Value,
-                    COLOR = int.Parse(x.Element("COLOR").Value),
-                    MINQTY = int.Parse(x.Element("MINQTY").Value) * (multiplier > 0 ? multiplier : 1),
-                    NOTIFY = x.Element("NOTIFY").Value,
-                    REMARKS = x.Element("REMARKS") == null ? "" : x.Element("REMARKS").Value,
+                    ItemType = x.Element("ITEMTYPE").Value,
+                    ItemId = x.Element("ITEMID").Value,
+                    Color = int.Parse(x.Element("COLOR").Value),
+                    MinQty = int.Parse(x.Element("MINQTY").Value) * (multiplier > 0 ? multiplier : 1),
+                    Notify = x.Element("NOTIFY").Value,
+                    Remarks = x.Element("REMARKS") == null ? "" : x.Element("REMARKS").Value,
                 });
 
-            var inventory = new INVENTORY()
+            var inventory = new Inventory()
             {
-                ITEM = items.ToArray<INVENTORYITEM>()
+                Item = items.ToArray()
             };
 
             return inventory;
         }
 
-        private INVENTORYITEM[] iTEMField;
+        private InventoryItem[] _item;
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("ITEM")]
-        public INVENTORYITEM[] ITEM
+        [XmlElement("ITEM")]
+        public InventoryItem[] Item
         {
             get
             {
-                return this.iTEMField;
+                return this._item;
             }
             set
             {
-                this.iTEMField = value;
+                this._item = value;
             }
         }
     }
 
     /// <remarks/>
-    [System.SerializableAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
-    public partial class INVENTORYITEM
+    [Serializable()]
+    [DesignerCategory("code")]
+    [XmlType(AnonymousType = true)]
+    public partial class InventoryItem
     {
 
-        private string iTEMIDField;
+        private string _itemId;
 
-        private int cOLORField;
+        private int _color;
 
-        private int mINQTYField;
+        private int _minQty;
 
-        private string iTEMTYPEField;
+        private string _itemType;
 
-        private string nOTIFYField;
+        private string _notify;
 
-        private string rEMARKSField;
+        private string _remarks;
 
         /// <remarks/>
         /// <remarks/>
-        public string ITEMID
+        [XmlElement("ITEMID")]
+        public string ItemId
         {
             get
             {
-                return this.iTEMIDField;
+                return this._itemId;
             }
             set
             {
-                this.iTEMIDField = value;
+                this._itemId = value;
             }
         }
 
         /// <remarks/>
-        public int COLOR
+        /// 
+        [XmlElement("COLOR")]
+        public int Color
         {
             get
             {
-                return this.cOLORField;
+                return this._color;
             }
             set
             {
-                this.cOLORField = value;
+                this._color = value;
             }
         }
 
         /// <remarks/>
-        public int MINQTY
+        [XmlElement("MINQTY")]
+        public int MinQty
         {
             get
             {
-                return this.mINQTYField;
+                return this._minQty;
             }
             set
             {
-                this.mINQTYField = value;
+                this._minQty = value;
             }
         }
 
-        public string ITEMTYPE
+        [XmlElement("ITEMTYPE")]
+        public string ItemType
         {
             get
             {
-                return this.iTEMTYPEField;
+                return this._itemType;
             }
             set
             {
-                this.iTEMTYPEField = value;
-            }
-        }
-
-        /// <remarks/>
-        public string NOTIFY
-        {
-            get
-            {
-                return this.nOTIFYField;
-            }
-            set
-            {
-                this.nOTIFYField = value;
+                this._itemType = value;
             }
         }
 
         /// <remarks/>
-        public string REMARKS
+        [XmlElement("NOTIFY")]
+        public string Notify
         {
             get
             {
-                return this.rEMARKSField;
+                return this._notify;
             }
             set
             {
-                this.rEMARKSField = value;
+                this._notify = value;
+            }
+        }
+
+        /// <remarks/>
+        [XmlElement("REMARKS")]
+        public string Remarks
+        {
+            get
+            {
+                return this._remarks;
+            }
+            set
+            {
+                this._remarks = value;
             }
         }
     }

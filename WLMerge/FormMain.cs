@@ -16,13 +16,14 @@ namespace WLMerge
 {
     public partial class FormMain : Form
     {
-        private SortableBindingList<INVENTORYITEM> _allItems;
+        public const string AppName = "WLMerge";
+        private SortableBindingList<InventoryItem> _allItems;
         private int _pieceCount;
         private int _fileCount;
 
         public FormMain()
         {
-            _allItems = new SortableBindingList<INVENTORYITEM>(new List<INVENTORYITEM>());
+            _allItems = new SortableBindingList<InventoryItem>(new List<InventoryItem>());
 
             InitializeComponent();
         }
@@ -34,8 +35,13 @@ namespace WLMerge
             iNVENTORYITEMBindingSource.DataSource = _allItems;
             buttonExport.Enabled = false;
             buttonClear.Enabled = false;
-            Text = "WLMerge - drag or browse file(s) to add Wanted Lists";
+            UpdateTitle();
         }
+
+        private void UpdateTitle() => 
+            Text = _allItems.Count == 0
+                ? $"{AppName} - drag or browse file(s) to add Wanted Lists"
+                : $"{AppName} - lots: {_allItems.Count}, pieces: {_pieceCount}, files: {_fileCount}";
 
         private void FormMain_Load(object sender, EventArgs e)
         {
@@ -44,7 +50,7 @@ namespace WLMerge
 
         private void HandleXmlFiles(string[] files)
         {
-            var formAdd = new FormAdd();
+            var formAdd = new FormAddFiles();
             formAdd.Files = files.Length;
             formAdd.ShowDialog();
             var multiplier = formAdd.Multiplier;
@@ -53,12 +59,32 @@ namespace WLMerge
 
             foreach(var path in files)
             {
-                var items = INVENTORY.FromXmlFile(path, multiplier);
-                pieceCount += InventoryList.MergeItems(ref _allItems, items.ITEM);
+                var items = Inventory.FromXmlFile(path, multiplier);
+                pieceCount += InventoryList.MergeItems(ref _allItems, items.Item);
             }
 
             _pieceCount += pieceCount;
             _fileCount += files.Count();
+            iNVENTORYITEMBindingSource.ResetBindings(false);
+        }
+
+        private void UpdateAllValuesOfProperty(string property, string newValue)
+        {
+            for(int i = 0; i < _allItems.Count; i++)
+            {
+                switch (property)
+                {
+                    case  "NOTIFY": 
+                        _allItems[i].Notify = newValue;
+                        break;
+                    case "REMARKS":
+                        _allItems[i].Remarks = newValue;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             iNVENTORYITEMBindingSource.ResetBindings(false);
         }
 
@@ -108,7 +134,7 @@ namespace WLMerge
             buttonExport.Enabled = _allItems != null &&_allItems.Count > 0;
             buttonClear.Enabled = _allItems != null && _allItems.Count > 0;
 
-            Text = string.Format("WLMerge - lots: {0}, pieces: {1}, files: {2}", _allItems.Count, _pieceCount, _fileCount);
+            UpdateTitle();
         }
 
         private void buttonExit_Click(object sender, EventArgs e)
@@ -125,7 +151,7 @@ namespace WLMerge
 
         private void buttonExport_Click(object sender, EventArgs e)
         {
-            var wl = new INVENTORY() { ITEM = _allItems.ToArray() };
+            var wl = new Inventory() { Item = _allItems.ToArray() };
             var xml = wl.ToXml();
             Clipboard.SetText(xml);
             MessageBox.Show("All lots exported to clipboard! To import in Bricklink:\nWant > Upload > Upload BrickLink XML format", "Export", MessageBoxButtons.OK);
@@ -159,5 +185,24 @@ namespace WLMerge
 
             }
         }
+        private void dataGridViewItems_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                if(e.ColumnIndex == 4 || e.ColumnIndex == 5)
+                {
+                    var property = dataGridViewItems.Columns[e.ColumnIndex].HeaderText;
+                    var nvd = new FormEnterValue(property);
+                    nvd.NewValue += Nvd_NewValue;
+                    nvd.ShowDialog();
+                }
+            }
+
+        }
+        private void Nvd_NewValue(object sender, NewValueEventArgs e)
+        {
+            UpdateAllValuesOfProperty(e.Property, e.NewValue);
+        }
+
     }
 }

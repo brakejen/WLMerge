@@ -16,7 +16,7 @@ namespace WLMerge
         /// <param name="masterList">Main list to add items to</param>
         /// <param name="items">Array of items to merge inte main list</param>
         /// <returns>The total number of pieces added to main list</returns>
-        public static int MergeItems(ref SortableBindingList<INVENTORYITEM> masterList, INVENTORYITEM[] items)
+        public static int MergeItems(ref SortableBindingList<InventoryItem> masterList, InventoryItem[] items)
         {
             int piecesTotal = 0;
 
@@ -32,52 +32,45 @@ namespace WLMerge
         // Add or update a new item to a list of items.
         // If the item exist (based on itemId and color) the old and new will be combined with respect to piece count and remarks (update)
         // If the item does not exist it will be added as is
-        private static int AddOrUpdate(INVENTORYITEM newItem, ref SortableBindingList<INVENTORYITEM> list)
+        private static int AddOrUpdate(InventoryItem newItem, ref SortableBindingList<InventoryItem> list)
         {
-            var found = false;
-            var i = -1;
-            INVENTORYITEM oldItem = new INVENTORYITEM();
-
             foreach (var element in list)
             {
-                i++;
-
                 // Equality based on ITEMID and COLOR combined
-                if (element.ITEMID == newItem.ITEMID && element.COLOR == newItem.COLOR)
+                if (element.ItemId == newItem.ItemId && element.Color == newItem.Color)
                 {
-                    // Store element found so we can combine old with new (counts and comments combined), then bail loop
-                    oldItem = element;
-                    found = true;
-                    break;
+                    // Combine old and new one to make the updated item
+                    var itemsCombined = InventoryList.ItemsCombine(element, newItem);
+
+                    // Remove old one
+                    list.Remove(element);
+
+                    // Add updated item to replace old one
+                    list.Add(itemsCombined);
+
+                    // Return piece count of new one, ie number of added pieces
+                    return newItem.MinQty;
                 }
             }
 
-            if (!found)
-            {
-                // Item not found, new one so add it
-                list.Add(newItem);
-                return newItem.MINQTY;
-            }
-            else
-            {
-                // Item found, remove it first
-                list.RemoveAt(i);
+            // Item not found, new one so add it and return amount of pieces it adds
+            list.Add(newItem);
+            return newItem.MinQty;
+        }
 
-                // Create new one by combining counts and comments
-                var updatedItem = new INVENTORYITEM
-                {
-                    ITEMID = newItem.ITEMID,
-                    COLOR = newItem.COLOR,
-                    ITEMTYPE = newItem.ITEMTYPE,
-                    NOTIFY = newItem.NOTIFY,
-                    REMARKS = string.Format("{0} || {1}", oldItem.REMARKS, newItem.REMARKS),
-                    MINQTY = oldItem.MINQTY + newItem.MINQTY
-                };
+        private static InventoryItem ItemsCombine(InventoryItem i1, InventoryItem i2)
+        {
+            var iCombined = new InventoryItem
+            {
+                ItemId = i2.ItemId,
+                Color = i2.Color,
+                ItemType = i2.ItemType,
+                Notify = i2.Notify,
+                Remarks = string.Format("{0} || {1}", i1.Remarks, i2.Remarks),
+                MinQty = i1.MinQty + i2.MinQty
+            };
 
-                // Finally add the new combined item
-                list.Add(updatedItem);
-                return newItem.MINQTY;
-            }
+            return iCombined;
         }
     }
 }

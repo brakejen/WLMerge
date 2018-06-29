@@ -1,4 +1,7 @@
-﻿2018-06-28
+﻿- Apply value to columns (notify and remars)
+- 
+
+2018-06-28
 1.0.0.0
 
 - First version 

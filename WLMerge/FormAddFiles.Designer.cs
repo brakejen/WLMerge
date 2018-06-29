@@ -1,6 +1,6 @@
 ﻿namespace WLMerge
 {
-    partial class FormAdd
+    partial class FormAddFiles
     {
         /// <summary>
         /// Required designer variable.
@@ -123,14 +123,15 @@
             this.buttonAdd.UseVisualStyleBackColor = true;
             this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
             // 
-            // FormAdd
+            // FormAddFiles
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(279, 125);
             this.ControlBox = false;
             this.Controls.Add(this.tableLayoutPanelAdd);
-            this.Name = "FormAdd";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Name = "FormAddFiles";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add XML files";

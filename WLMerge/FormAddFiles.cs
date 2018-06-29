@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace WLMerge
 {
-    public partial class FormAdd : Form
+    public partial class FormAddFiles : Form
     {
-        public FormAdd()
+        public FormAddFiles()
         {
             InitializeComponent();
         }
