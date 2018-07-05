@@ -1,7 +1,6 @@
-﻿- Item property mapping (XML...)
-- All XML properties
-- Dynamic loading of columns depending on file contents
-- Default values with checkboxes (empty ignores or takes from file)
-- Enter confirms in dialogs
-- Shortcuts
-- Validation of indata in forms
+﻿- Correct update of stats in title
+- Reorder main UI?
+- L8n
+- Setup
+- Project file structure
+- 

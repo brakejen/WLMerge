@@ -1,9 +1,13 @@
-﻿- Apply value to columns (notify and remars)
-- 
+﻿2018-07-05
+1.1.0 (Klossfestivalen Edition)
+- Reset, apply or transform values of columns by right click (replacing popup when loading XML-files)
+- Validation of tranformation values (to some degree)
+- Colors now have names in tooltip
+- All properties of Wanted List Inventory Items supported
+- Icon, refactoring & other similar stuff
 
 2018-06-28
-1.0.0.0
-
+1.0.0 (World Cup Edition)
 - First version 
 - Sortable, colorized and clickable columns
 - Drag'n'drop in addition to browse files
