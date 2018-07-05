@@ -1,4 +1,9 @@
-﻿2018-07-05
+﻿- Deletion of rows prompts user
+- Tool tips for all cells
+- Row numbers in row header
+- Documentation
+
+2018-07-05
 1.1.0 (Klossfestivalen Edition)
 - Reset, apply or transform values of columns by right click (replacing popup when loading XML-files)
 - Validation of tranformation values (to some degree)

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace WLMerge
 {
+    /// <summary>
+    /// Represents the supported types of value transformations
+    /// </summary>
     public enum TransformValueOperation
     {
         Multiply = 0,
@@ -13,6 +16,10 @@ namespace WLMerge
         Subtract = 2,
     }
 
+    /// <summary>
+    /// Implements a simple and customized value transformer. Given a type, a value and an operation, 
+    /// it can transform given value according to this, using method Transform(object)
+    /// </summary>
     public class ValueTransformer
     {
         private Type _type;
@@ -26,6 +33,15 @@ namespace WLMerge
             _operation = operation;
         }
 
+        /// <summary>
+        /// Transform the given value according to predetermined rules
+        /// - strings only supports add and means contatenation. Other operations will return given value unaffected
+        /// - integers and decimals supports all transformations
+        /// - Value given is not type checked, the ValueTransformer is supposed to have been created with correct type to work with
+        /// - All other types the ValueTransformer have been created with, this method will return null regardless of given value
+        /// </summary>
+        /// <param name="value">The value to transform</param>
+        /// <returns></returns>
         public object Transform(object value)
         {
             if (_type == typeof(string))

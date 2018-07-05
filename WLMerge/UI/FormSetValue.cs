@@ -10,8 +10,15 @@ using System.Windows.Forms;
 
 namespace WLMerge
 {
+    /// <summary>
+    /// Represents a form that can be used to prompt user for new values.
+    /// An event when value is entered is provided, to get the value to be used.
+    /// </summary>
     public partial class FormSetValue : Form
     {
+        /// <summary>
+        /// Event raised when user enters a value and confirms
+        /// </summary>
         public event EventHandler<NewValueEventArgs> NewValue;
 
         protected virtual void OnNewValue(object sender, NewValueEventArgs e)
@@ -20,6 +27,9 @@ namespace WLMerge
             handler?.Invoke(sender, e); // Invoke handler
         }
 
+        /// <summary>
+        /// Creates a new form to enter new values in
+        /// </summary>
         public FormSetValue()
         {
             InitializeComponent();
@@ -36,6 +46,7 @@ namespace WLMerge
             Close();
         }
 
+        // Only allow to confirm if anything is entered in textbox for new value
         private void textBoxNewValue_TextChanged(object sender, EventArgs e)
         {
             buttonSet.Enabled = ((TextBox)sender).Text != string.Empty;

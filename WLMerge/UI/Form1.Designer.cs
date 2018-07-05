@@ -68,7 +68,7 @@
             this.buttonBrowsForFile.Name = "buttonBrowsForFile";
             this.buttonBrowsForFile.Size = new System.Drawing.Size(142, 37);
             this.buttonBrowsForFile.TabIndex = 2;
-            this.buttonBrowsForFile.Text = "&Browse for file(s)";
+            this.buttonBrowsForFile.Text = "&Browse file(s)";
             this.toolTipMain.SetToolTip(this.buttonBrowsForFile, "Select XML-files to merge (or drop them into empty table above)");
             this.buttonBrowsForFile.UseVisualStyleBackColor = true;
             this.buttonBrowsForFile.Click += new System.EventHandler(this.buttonBrowsForFile_Click);
@@ -113,6 +113,7 @@
             // dataGridViewItems
             // 
             this.dataGridViewItems.AllowUserToAddRows = false;
+            this.dataGridViewItems.AllowUserToResizeRows = false;
             this.dataGridViewItems.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -141,7 +142,9 @@
             this.dataGridViewItems.CellContextMenuStripNeeded += new System.Windows.Forms.DataGridViewCellContextMenuStripNeededEventHandler(this.dataGridViewItems_CellContextMenuStripNeeded);
             this.dataGridViewItems.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridViewItems_CellFormatting);
             this.dataGridViewItems.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewItems_CellMouseDown);
+            this.dataGridViewItems.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataGridViewItems_RowPostPaint);
             this.dataGridViewItems.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridViewItems_RowsAdded);
+            this.dataGridViewItems.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridViewItems_KeyDown);
             // 
             // buttonExit
             // 
@@ -223,6 +226,7 @@
             this.itemTypeDataGridViewTextBoxColumn.HeaderText = "ItemType";
             this.itemTypeDataGridViewTextBoxColumn.Name = "itemTypeDataGridViewTextBoxColumn";
             this.itemTypeDataGridViewTextBoxColumn.ReadOnly = true;
+            this.itemTypeDataGridViewTextBoxColumn.ToolTipText = "[Read Only Column] Click to sort";
             // 
             // itemIdDataGridViewTextBoxColumn
             // 
@@ -232,6 +236,7 @@
             this.itemIdDataGridViewTextBoxColumn.ReadOnly = true;
             this.itemIdDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.itemIdDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.itemIdDataGridViewTextBoxColumn.ToolTipText = "[Read Only Column] Click to sort";
             // 
             // colorDataGridViewTextBoxColumn
             // 
@@ -239,54 +244,63 @@
             this.colorDataGridViewTextBoxColumn.HeaderText = "Color";
             this.colorDataGridViewTextBoxColumn.Name = "colorDataGridViewTextBoxColumn";
             this.colorDataGridViewTextBoxColumn.ReadOnly = true;
+            this.colorDataGridViewTextBoxColumn.ToolTipText = "[Read Only Column] Click to sort";
             // 
             // maxPriceDataGridViewTextBoxColumn
             // 
             this.maxPriceDataGridViewTextBoxColumn.DataPropertyName = "MaxPrice";
             this.maxPriceDataGridViewTextBoxColumn.HeaderText = "MaxPrice";
             this.maxPriceDataGridViewTextBoxColumn.Name = "maxPriceDataGridViewTextBoxColumn";
+            this.maxPriceDataGridViewTextBoxColumn.ToolTipText = "Click to sort";
             // 
             // minQtyDataGridViewTextBoxColumn
             // 
             this.minQtyDataGridViewTextBoxColumn.DataPropertyName = "MinQty";
             this.minQtyDataGridViewTextBoxColumn.HeaderText = "MinQty";
             this.minQtyDataGridViewTextBoxColumn.Name = "minQtyDataGridViewTextBoxColumn";
+            this.minQtyDataGridViewTextBoxColumn.ToolTipText = "Click to sort";
             // 
             // qtyFilledDataGridViewTextBoxColumn
             // 
             this.qtyFilledDataGridViewTextBoxColumn.DataPropertyName = "QtyFilled";
             this.qtyFilledDataGridViewTextBoxColumn.HeaderText = "QtyFilled";
             this.qtyFilledDataGridViewTextBoxColumn.Name = "qtyFilledDataGridViewTextBoxColumn";
+            this.qtyFilledDataGridViewTextBoxColumn.ToolTipText = "Click to sort";
             // 
             // conditionDataGridViewTextBoxColumn
             // 
             this.conditionDataGridViewTextBoxColumn.DataPropertyName = "Condition";
             this.conditionDataGridViewTextBoxColumn.HeaderText = "Condition";
             this.conditionDataGridViewTextBoxColumn.Name = "conditionDataGridViewTextBoxColumn";
+            this.conditionDataGridViewTextBoxColumn.ToolTipText = "Click to sort";
             // 
             // remarksDataGridViewTextBoxColumn
             // 
             this.remarksDataGridViewTextBoxColumn.DataPropertyName = "Remarks";
             this.remarksDataGridViewTextBoxColumn.HeaderText = "Remarks";
             this.remarksDataGridViewTextBoxColumn.Name = "remarksDataGridViewTextBoxColumn";
+            this.remarksDataGridViewTextBoxColumn.ToolTipText = "Click to sort";
             // 
             // notifyDataGridViewTextBoxColumn
             // 
             this.notifyDataGridViewTextBoxColumn.DataPropertyName = "Notify";
             this.notifyDataGridViewTextBoxColumn.HeaderText = "Notify";
             this.notifyDataGridViewTextBoxColumn.Name = "notifyDataGridViewTextBoxColumn";
+            this.notifyDataGridViewTextBoxColumn.ToolTipText = "Click to sort";
             // 
             // wantedShowDataGridViewTextBoxColumn
             // 
             this.wantedShowDataGridViewTextBoxColumn.DataPropertyName = "WantedShow";
             this.wantedShowDataGridViewTextBoxColumn.HeaderText = "WantedShow";
             this.wantedShowDataGridViewTextBoxColumn.Name = "wantedShowDataGridViewTextBoxColumn";
+            this.wantedShowDataGridViewTextBoxColumn.ToolTipText = "Click to sort";
             // 
             // wantedListIdDataGridViewTextBoxColumn
             // 
             this.wantedListIdDataGridViewTextBoxColumn.DataPropertyName = "WantedListId";
             this.wantedListIdDataGridViewTextBoxColumn.HeaderText = "WantedListId";
             this.wantedListIdDataGridViewTextBoxColumn.Name = "wantedListIdDataGridViewTextBoxColumn";
+            this.wantedListIdDataGridViewTextBoxColumn.ToolTipText = "Click to sort";
             // 
             // inventoryItemListBindingSource
             // 
@@ -324,6 +338,10 @@
         private System.Windows.Forms.Button buttonExit;
         private System.Windows.Forms.CheckBox checkBoxHideEmptyColumns;
         private System.Windows.Forms.ToolTip toolTipMain;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripDgvRightClick;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemClear;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemSet;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemTransform;
         private System.Windows.Forms.DataGridViewTextBoxColumn itemTypeDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewLinkColumn itemIdDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn colorDataGridViewTextBoxColumn;
@@ -335,10 +353,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn notifyDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn wantedShowDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn wantedListIdDataGridViewTextBoxColumn;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStripDgvRightClick;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemClear;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemSet;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemTransform;
     }
 }
 

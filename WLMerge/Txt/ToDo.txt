@@ -1,6 +1,5 @@
 ﻿- Correct update of stats in title
 - Reorder main UI?
-- L8n
+- i18n
 - Setup
-- Project file structure
-- 
+ 
