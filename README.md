@@ -4,10 +4,10 @@ A tool to merge Bricklink Wanted Lists
 # Usage
 - Drop any valid Bricklink Wanted list (.xml) into the app, or browse for them.
 - One or more files can be added at the same time
-- Change multiplier as desired, each piece count in the files selected will be multiplied with this (1 is default)
 - Columns can be sorted by clicking on headers
 - Click on piece id to launch the details page on Bricklink for that piece
 - At any time more files can be added, they will be merged as well
+- Right click on cells to get menu for clearing, changing or transforming column cells (note: some columns are read only thus won't show menu when right clicked)
 - Clear to start over
 - Export will copy the merged list to clipboard, ready to be pasted into Bricklink import page
 
