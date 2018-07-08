@@ -1,5 +1,12 @@
-﻿- Correct update of stats in title
-- Reorder main UI?
+﻿ToDo list:
+
+BUGS
+- 
+
+LIKELY
+- 
+
+POSSIBLE 
 - i18n
 - Setup
  

@@ -32,11 +32,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.buttonBrowsForFile = new System.Windows.Forms.Button();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
-            this.buttonClear = new System.Windows.Forms.Button();
             this.dataGridViewItems = new System.Windows.Forms.DataGridView();
+            this.buttonClear = new System.Windows.Forms.Button();
             this.buttonExit = new System.Windows.Forms.Button();
-            this.buttonExport = new System.Windows.Forms.Button();
+            this.buttonAbout = new System.Windows.Forms.Button();
             this.checkBoxHideEmptyColumns = new System.Windows.Forms.CheckBox();
+            this.buttonExport = new System.Windows.Forms.Button();
             this.openFileDialogXml = new System.Windows.Forms.OpenFileDialog();
             this.toolTipMain = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStripDgvRightClick = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -84,31 +85,22 @@
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanelMain.Controls.Add(this.buttonClear, 1, 1);
-            this.tableLayoutPanelMain.Controls.Add(this.buttonBrowsForFile, 0, 1);
-            this.tableLayoutPanelMain.Controls.Add(this.dataGridViewItems, 0, 0);
-            this.tableLayoutPanelMain.Controls.Add(this.buttonExit, 4, 1);
-            this.tableLayoutPanelMain.Controls.Add(this.buttonExport, 3, 1);
-            this.tableLayoutPanelMain.Controls.Add(this.checkBoxHideEmptyColumns, 2, 1);
+            this.tableLayoutPanelMain.Controls.Add(this.buttonBrowsForFile, 0, 2);
+            this.tableLayoutPanelMain.Controls.Add(this.dataGridViewItems, 0, 1);
+            this.tableLayoutPanelMain.Controls.Add(this.buttonExit, 4, 2);
+            this.tableLayoutPanelMain.Controls.Add(this.buttonAbout, 4, 0);
+            this.tableLayoutPanelMain.Controls.Add(this.buttonClear, 1, 2);
+            this.tableLayoutPanelMain.Controls.Add(this.buttonExport, 3, 2);
+            this.tableLayoutPanelMain.Controls.Add(this.checkBoxHideEmptyColumns, 2, 2);
             this.tableLayoutPanelMain.Location = new System.Drawing.Point(12, 12);
             this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
-            this.tableLayoutPanelMain.RowCount = 2;
+            this.tableLayoutPanelMain.RowCount = 3;
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanelMain.Size = new System.Drawing.Size(758, 529);
             this.tableLayoutPanelMain.TabIndex = 0;
-            // 
-            // buttonClear
-            // 
-            this.buttonClear.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.buttonClear.Location = new System.Drawing.Point(155, 485);
-            this.buttonClear.Name = "buttonClear";
-            this.buttonClear.Size = new System.Drawing.Size(142, 37);
-            this.buttonClear.TabIndex = 3;
-            this.buttonClear.Text = "&Clear";
-            this.toolTipMain.SetToolTip(this.buttonClear, "Clear all items from list");
-            this.buttonClear.UseVisualStyleBackColor = true;
-            this.buttonClear.Click += new System.EventHandler(this.buttonClear_Click);
             // 
             // dataGridViewItems
             // 
@@ -133,18 +125,31 @@
             this.wantedListIdDataGridViewTextBoxColumn});
             this.tableLayoutPanelMain.SetColumnSpan(this.dataGridViewItems, 5);
             this.dataGridViewItems.DataSource = this.inventoryItemListBindingSource;
-            this.dataGridViewItems.Location = new System.Drawing.Point(3, 3);
+            this.dataGridViewItems.Location = new System.Drawing.Point(3, 53);
             this.dataGridViewItems.Name = "dataGridViewItems";
             this.dataGridViewItems.RowTemplate.Height = 24;
-            this.dataGridViewItems.Size = new System.Drawing.Size(752, 473);
+            this.dataGridViewItems.Size = new System.Drawing.Size(752, 423);
             this.dataGridViewItems.TabIndex = 1;
             this.dataGridViewItems.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewItems_CellContentClick);
             this.dataGridViewItems.CellContextMenuStripNeeded += new System.Windows.Forms.DataGridViewCellContextMenuStripNeededEventHandler(this.dataGridViewItems_CellContextMenuStripNeeded);
             this.dataGridViewItems.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridViewItems_CellFormatting);
             this.dataGridViewItems.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewItems_CellMouseDown);
+            this.dataGridViewItems.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewItems_CellValueChanged);
             this.dataGridViewItems.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataGridViewItems_RowPostPaint);
             this.dataGridViewItems.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridViewItems_RowsAdded);
             this.dataGridViewItems.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridViewItems_KeyDown);
+            // 
+            // buttonClear
+            // 
+            this.buttonClear.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.buttonClear.Location = new System.Drawing.Point(155, 485);
+            this.buttonClear.Name = "buttonClear";
+            this.buttonClear.Size = new System.Drawing.Size(142, 37);
+            this.buttonClear.TabIndex = 3;
+            this.buttonClear.Text = "&Clear";
+            this.toolTipMain.SetToolTip(this.buttonClear, "Clear all items from list");
+            this.buttonClear.UseVisualStyleBackColor = true;
+            this.buttonClear.Click += new System.EventHandler(this.buttonClear_Click);
             // 
             // buttonExit
             // 
@@ -157,17 +162,17 @@
             this.buttonExit.UseVisualStyleBackColor = true;
             this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             // 
-            // buttonExport
+            // buttonAbout
             // 
-            this.buttonExport.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.buttonExport.Location = new System.Drawing.Point(457, 485);
-            this.buttonExport.Name = "buttonExport";
-            this.buttonExport.Size = new System.Drawing.Size(142, 37);
-            this.buttonExport.TabIndex = 4;
-            this.buttonExport.Text = "&Export";
-            this.toolTipMain.SetToolTip(this.buttonExport, "Export current list to XML (will be copied to clipbook)");
-            this.buttonExport.UseVisualStyleBackColor = true;
-            this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
+            this.buttonAbout.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.buttonAbout.Location = new System.Drawing.Point(610, 6);
+            this.buttonAbout.Name = "buttonAbout";
+            this.buttonAbout.Size = new System.Drawing.Size(142, 37);
+            this.buttonAbout.TabIndex = 7;
+            this.buttonAbout.Text = "&About";
+            this.toolTipMain.SetToolTip(this.buttonAbout, "Clear all items from list");
+            this.buttonAbout.UseVisualStyleBackColor = true;
+            this.buttonAbout.Click += new System.EventHandler(this.buttonAbout_Click);
             // 
             // checkBoxHideEmptyColumns
             // 
@@ -182,6 +187,18 @@
             this.toolTipMain.SetToolTip(this.checkBoxHideEmptyColumns, "Hide empty columns (or show if they are already hidden)");
             this.checkBoxHideEmptyColumns.UseVisualStyleBackColor = true;
             this.checkBoxHideEmptyColumns.CheckedChanged += new System.EventHandler(this.checkBoxHideEmptyColumns_CheckedChanged);
+            // 
+            // buttonExport
+            // 
+            this.buttonExport.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.buttonExport.Location = new System.Drawing.Point(457, 485);
+            this.buttonExport.Name = "buttonExport";
+            this.buttonExport.Size = new System.Drawing.Size(142, 37);
+            this.buttonExport.TabIndex = 4;
+            this.buttonExport.Text = "&Export";
+            this.toolTipMain.SetToolTip(this.buttonExport, "Export current list to XML (will be copied to clipbook)");
+            this.buttonExport.UseVisualStyleBackColor = true;
+            this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
             // 
             // openFileDialogXml
             // 
@@ -315,8 +332,9 @@
             this.Controls.Add(this.tableLayoutPanelMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormMain";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "WL Merge: drop or browse XML-files";
-            this.Load += new System.EventHandler(this.FormMain_Load);
+            this.Shown += new System.EventHandler(this.FormMain_Shown);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.FormMain_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.FormMain_DragEnter);
             this.tableLayoutPanelMain.ResumeLayout(false);
@@ -353,6 +371,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn notifyDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn wantedShowDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn wantedListIdDataGridViewTextBoxColumn;
+        private System.Windows.Forms.Button buttonAbout;
     }
 }
 

@@ -2,6 +2,7 @@
 using System.IO;
 using System.ComponentModel;
 using System.Xml.Serialization;
+using System.Runtime.CompilerServices;
 
 namespace WLMerge
 {
@@ -84,8 +85,15 @@ namespace WLMerge
     [Serializable()]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true)]
-    public class InventoryItem
+    public class InventoryItem : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string name = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
         private string _itemType;
 
         private string _itemId;
@@ -118,6 +126,7 @@ namespace WLMerge
             set
             {
                 this._itemType = value;
+                OnPropertyChanged(Inventory.ItemProperty.ITEMTYPE.ToString());
             }
         }
 
@@ -131,6 +140,7 @@ namespace WLMerge
             set
             {
                 this._itemId = value;
+                OnPropertyChanged(Inventory.ItemProperty.ITEMID.ToString());
             }
         }
 
@@ -144,6 +154,7 @@ namespace WLMerge
             set
             {
                 this._color = value;
+                OnPropertyChanged(Inventory.ItemProperty.COLOR.ToString());
             }
         }
 
@@ -157,6 +168,7 @@ namespace WLMerge
             set
             {
                 this._maxPrice = value;
+                OnPropertyChanged(Inventory.ItemProperty.MAXPRICE.ToString());
             }
         }
 
@@ -170,6 +182,7 @@ namespace WLMerge
             set
             {
                 this._minQty = value;
+                OnPropertyChanged(Inventory.ItemProperty.MINQTY.ToString());
             }
         }
 
@@ -184,6 +197,7 @@ namespace WLMerge
             set
             {
                 this._qtyFilled = value;
+                OnPropertyChanged(Inventory.ItemProperty.QTYFILLED.ToString());
             }
         }
 
@@ -197,6 +211,7 @@ namespace WLMerge
             set
             {
                 this._condition = value;
+                OnPropertyChanged(Inventory.ItemProperty.CONDITION.ToString());
             }
         }
 
@@ -210,6 +225,7 @@ namespace WLMerge
             set
             {
                 this._remarks = value;
+                OnPropertyChanged(Inventory.ItemProperty.REMARKS.ToString());
             }
         }
 
@@ -223,6 +239,7 @@ namespace WLMerge
             set
             {
                 this._notify = value;
+                OnPropertyChanged(Inventory.ItemProperty.NOTIFY.ToString());
             }
         }
 
@@ -236,6 +253,7 @@ namespace WLMerge
             set
             {
                 this._wantedShow = value;
+                OnPropertyChanged(Inventory.ItemProperty.WANTEDSHOW.ToString());
             }
         }
 
@@ -249,6 +267,7 @@ namespace WLMerge
             set
             {
                 this._wantedListId = value;
+                OnPropertyChanged(Inventory.ItemProperty.WANTEDSHOW.ToString());
             }
         }
 

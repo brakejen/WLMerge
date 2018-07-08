@@ -3,16 +3,17 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace WLMerge
 {
     public partial class FormMain : Form
-    {
-        public const string AppName = "WLMerge";
+    { 
         private const string BricklinkCatalogItemLink = "https://www.bricklink.com/v2/catalog/catalogitem.page?P={0}&C={1}";
         private InventoryItemList _itemList;
         private int _fileCount;
+        private int _pieceCount;
 
         /// <summary>
         /// Creates and initializes the main form of the app
@@ -21,15 +22,28 @@ namespace WLMerge
         {
             InitializeComponent();
 
+            // Create, initialize and bind the item list that will hold all items in list/table
             _itemList = new InventoryItemList();
-            _itemList.ItemChanged += _itemList_ItemChanged;
+            _itemList.ItemAdded += _itemList_ItemAdded;
+            _itemList.ItemRemoved += _itemList_ItemRemoved;
             inventoryItemListBindingSource.DataSource = _itemList;
+
+            // Perform a UI reset
+            ResetForm();
         }
 
-        // TODO: remove or update
-        private void _itemList_ItemChanged(object sender, ItemChangedEventArgs e)
+        private void FirstTimeUseStep()
         {
-            UpdateTitle();
+            var versionHistory = Program.VersionHistory;
+
+            if (versionHistory == Program.History.FirstRun)
+            {
+                new FormAbout(FormAbout.SelectedView.ReadMe).ShowDialog();
+            }
+            else if (versionHistory == Program.History.NewVersion)
+            {
+                new FormAbout(FormAbout.SelectedView.History).ShowDialog();
+            }
         }
 
         // Reset the form to initial state
@@ -37,6 +51,7 @@ namespace WLMerge
         {
             _itemList.Clear();
             _fileCount = 0;
+            _pieceCount = 0;
             buttonExport.Enabled = false;
             buttonClear.Enabled = false;
             checkBoxHideEmptyColumns.Enabled = false;
@@ -46,8 +61,8 @@ namespace WLMerge
         // Update app title to reflect state
         private void UpdateTitle() => 
             Text = _itemList.Count == 0
-                ? $"{AppName} - drag or browse file(s) to add Wanted Lists"
-                : $"{AppName} - lots: {_itemList.Count}, pieces: {_itemList.PieceCount}, files: {_fileCount}";
+                ? $"{Program.AppName} - drag or browse file(s) to add Wanted Lists"
+                : $"{Program.AppName} - lots: {_itemList.Count}, pieces: {_pieceCount}, files: {_fileCount}";
 
         // Given an array of files (valid and complete file paths), handle them (ie load them into app)
         private void HandleXmlFiles(string[] files)
@@ -114,15 +129,30 @@ namespace WLMerge
             {
                 var oldValue = dataGridViewItems[columnIndex, rowIndex].Value;
                 var newValue = transformer.Transform(oldValue);
-
+                    
                 dataGridViewItems[columnIndex, rowIndex].Value = newValue;
             }
         }
+    
+        // Event: rows have been removed, update counter in header accordingly
+        private void _itemList_ItemRemoved(object sender, ItemRemovedEventArgs e)
+        {
+            _pieceCount -= e.OldItem.MinQty;
+            UpdateTitle();
+        }
 
-        // Event: tasks to do when form (ie app) is loaded after launch
+        // Event: rows have been added, update counter in header accordingly
+        private void _itemList_ItemAdded(object sender, ItemAddedEventArgs e)
+        {
+            _pieceCount += e.NewItem.MinQty;
+            UpdateTitle();
+        }
+
+
+        // ToDo Remove
+        // Event: tasks to do when form (ie app) is loads
         private void FormMain_Load(object sender, EventArgs e)
         {
-            ResetForm();
         }
 
         // Event: determine if content being dragged onto form is of interest
@@ -150,23 +180,15 @@ namespace WLMerge
         }
 
         // Event: act when XML-files have been dropped
-        private void FormMain_DragDrop(object sender, DragEventArgs e)
-        {
-            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            HandleXmlFiles(files);
-        }
+        private void FormMain_DragDrop(object sender, DragEventArgs e) => HandleXmlFiles((string[])e.Data.GetData(DataFormats.FileDrop));
 
         // Event: browse for files button clicked
-        private void buttonBrowsForFile_Click(object sender, EventArgs e)
-        {
-            openFileDialogXml.ShowDialog();
-        }
+        private void buttonBrowsForFile_Click(object sender, EventArgs e) => openFileDialogXml.ShowDialog();
 
         // Event: file (or files) in browse for file dialog have been successfully selected
         private void openFileDialogXml_FileOk(object sender, CancelEventArgs e)
         {
-            var files = openFileDialogXml.FileNames;
-            HandleXmlFiles(files);
+            HandleXmlFiles(openFileDialogXml.FileNames);
         }
 
         // Event: Rows have been added to the table. Make adjustments to form and table as data have been added
@@ -185,10 +207,7 @@ namespace WLMerge
         }
 
         // Event: button to exit application have been clicked
-        private void buttonExit_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
+        private void buttonExit_Click(object sender, EventArgs e) => Application.Exit();
 
         // Event: button to clear contents of table have been clicked
         private void buttonClear_Click(object sender, EventArgs e)
@@ -268,11 +287,7 @@ namespace WLMerge
         }
 
         // Event: the checkbox to hide/show empty columns have been clicked. React accordingly
-        private void checkBoxHideEmptyColumns_CheckedChanged(object sender, EventArgs e)
-        {
-            // Toggle according to checkbox state... (checked = hide empty colums, unckecked = show all)
-            ToggleEmptyColumnsVisible(((CheckBox)sender).Checked);
-        }
+        private void checkBoxHideEmptyColumns_CheckedChanged(object sender, EventArgs e) => ToggleEmptyColumnsVisible(((CheckBox)sender).Checked);
 
         // Event: cell has been right clicked. Show context menu
         private void dataGridViewItems_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)
@@ -360,6 +375,23 @@ namespace WLMerge
                     // Cancel deletion depending on answer. If 'No', tell system keypress has been handled and deletion will not be performed
                     e.Handled = dialogResult == DialogResult.No;
                 }
+            }
+        }
+
+        private void buttonAbout_Click(object sender, EventArgs e) => new FormAbout().ShowDialog();
+
+        private void FormMain_Shown(object sender, EventArgs e)
+        {
+            FirstTimeUseStep();
+        }
+
+        private void dataGridViewItems_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (_itemList != null && e.ColumnIndex == (int)Inventory.ItemProperty.MINQTY)
+            {
+                var pieceCount = _itemList.Sum(i => i.MinQty);
+                _pieceCount = pieceCount;
+                UpdateTitle();
             }
         }
     }

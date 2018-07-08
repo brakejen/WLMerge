@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace WLMerge
@@ -16,25 +17,21 @@ namespace WLMerge
     ///       it provides the main functionality of the app, as in WL*merge*
     /// </summary>
     public class InventoryItemList : SortableBindingList<InventoryItem>
-    {
-        public event EventHandler<ItemChangedEventArgs> ItemChanged;
-
-        protected virtual void OnItemChanged(object sender, ItemChangedEventArgs e)
+    {        
+        public event EventHandler<ItemRemovedEventArgs> ItemRemoved;
+        public event EventHandler<ItemAddedEventArgs> ItemAdded;
+     
+        protected virtual void OnItemRemoved(object sender, ItemRemovedEventArgs e)
         {
-            var handler = ItemChanged; // Avoid race condition
+            var handler = ItemRemoved; // Avoid race condition
             handler?.Invoke(sender, e); // Invoke handler
         }
-
-        /// <summary>
-        /// The total amount of pieces this list hold (based on MINQTY)
-        /// </summary>
-        public int PieceCount { get; private set; }
-
-        /// <summary>
-        /// The total amount of items this list hold (unique pieces with same colors)
-        /// </summary>
-        public int ItemCount { get { return Count; } }
-
+        protected virtual void OnItemAdded(object sender, ItemAddedEventArgs e)
+        {
+            var handler = ItemAdded; // Avoid race condition
+            handler?.Invoke(sender, e); // Invoke handler
+        }
+        
         /// <summary>
         /// Create an empty InventoryItemList
         /// </summary>
@@ -51,6 +48,30 @@ namespace WLMerge
             return new Inventory() { Items = this.ToArray() };
         }
 
+        /// <summary>
+        /// Add an item to this list. Replaces the base.Add() and notifies 
+        /// any listeners upon the change.
+        /// </summary>
+        /// <param name="item">The item to add</param>
+        public new void Add(InventoryItem item)
+        {
+            base.Add(item);
+            OnItemAdded(this, new ItemAddedEventArgs(Count, item));
+        }
+
+        /// <summary>
+        /// Remove an item from this list. Replaces the base.RemoveItem() and notifies
+        /// any listeners upon the change.
+        /// </summary>
+        /// <param name="i">The index of the item to remove</param>
+        protected override void RemoveItem(int i)
+        {
+            var item = this[i];
+            base.RemoveItem(i);
+            OnItemRemoved(this, new ItemRemovedEventArgs(i, item));
+        }
+
+        
         /// <summary>
         /// Merge items from an inventory to this list of items. If an item already exist, it will be merged.
         /// If item does not exist, it will be added as is. TotalPieces will be updated accordingly.
@@ -75,9 +96,6 @@ namespace WLMerge
                         var itemsCombined = oldItem + newItem;
                         SetItem(i, itemsCombined);
 
-                        // Signal listeners that item has changed
-                        OnItemChanged(this, new ItemChangedEventArgs(i, oldItem, itemsCombined));
-
                         // We're done searching
                         combined = true;
                         break;
@@ -89,9 +107,6 @@ namespace WLMerge
                     // Item not found, new one so add it 
                     Add(newItem);
                 }
-
-                // Adjust piece count
-                PieceCount += newItem.MinQty;
             }
         }
     }

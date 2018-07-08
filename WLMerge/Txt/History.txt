@@ -1,7 +1,9 @@
-﻿- Deletion of rows prompts user
+﻿2018-07-08
+1.2.0 (BBQ Edition)
+- Deletion of rows prompts user
 - Tool tips for all cells
 - Row numbers in row header
-- Documentation
+- Documentation, internal and external (About box)
 
 2018-07-05
 1.1.0 (Klossfestivalen Edition)
