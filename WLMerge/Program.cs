@@ -34,6 +34,20 @@ namespace WLMerge
             return version.Substring(version.LastIndexOf('.') + 1);
         }
 
+        public static string AppDataFolder
+        {
+            get
+            {
+                var baseFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                var appDataFolder = Path.Combine(baseFolder, AppName);
+                if (!Directory.Exists(appDataFolder))
+                {
+                    Directory.CreateDirectory(appDataFolder);
+                }
+                return appDataFolder;
+            }
+        }
+
         /// <summary>
         ///     Gets the assembly company.
         /// </summary>
@@ -178,7 +192,8 @@ namespace WLMerge
         {
             get
             {
-                var versionFile = Path.Combine(AssemblyPath, VersionFile);
+                var pathToFile = AppDataFolder; // AssemblyPath won't work due to write access in program folder
+                var versionFile = Path.Combine(pathToFile, VersionFile);
                 History versionHistory;
 
                 if (File.Exists(versionFile))
@@ -204,7 +219,7 @@ namespace WLMerge
                     versionHistory = History.FirstRun;
                 }
 
-                File.WriteAllText(Path.Combine(AssemblyPath, VersionFile), AssemblyVersion);
+                File.WriteAllText(Path.Combine(pathToFile, VersionFile), AssemblyVersion);
                 return versionHistory;
             }
         }
