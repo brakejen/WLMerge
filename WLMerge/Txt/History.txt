@@ -1,4 +1,8 @@
 ﻿2018-07-08
+1.2.1
+- Wrong path for .txt-files if installed in PF-folder
+
+2018-07-08
 1.2.0 (BBQ Edition)
 - Deletion of rows prompts user
 - Tool tips for all cells

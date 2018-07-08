@@ -43,7 +43,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 Source: "C:\Users\brakejen\source\repos\WLMerge\WLMerge\bin\Release\WLMerge.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\brakejen\source\repos\WLMerge\WLMerge\bin\Release\Txt\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\WLMerge\bin\Release\*.txt"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

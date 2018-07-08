@@ -164,7 +164,7 @@ namespace WLMerge
         /// </returns>
         private static string LoadFileToShow(string fileName)
         {
-            var fullPath = $"{Program.AssemblyPath}{Path.DirectorySeparatorChar}Txt{Path.DirectorySeparatorChar}{fileName}.txt";
+            var fullPath = Path.Combine(Program.AssemblyPath, $"{fileName}.txt");
 
             try
             {
