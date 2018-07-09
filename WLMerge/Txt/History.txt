@@ -1,5 +1,6 @@
 ﻿2018-07-09
 1.2.2
+- Validation improvements
 - UI tweaks
 - Build script fixed
 

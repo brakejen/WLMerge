@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BO\ValueValidator.cs" />
     <Compile Include="Bricklink\BricklinkColors.cs" />
     <Compile Include="Bricklink\BricklinkItems.cs" />
     <Compile Include="Events\ItemRemovedEventArgs.cs" />

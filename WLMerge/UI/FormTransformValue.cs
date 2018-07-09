@@ -9,7 +9,7 @@ namespace WLMerge
     /// </summary>
     public partial class FormTransformValue : Form
     {
-        Type _type;
+        InventoryItem.ItemProperty _property;
 
         /// <summary>
         /// Event raised when user selects transformation data and confirms
@@ -28,9 +28,9 @@ namespace WLMerge
         /// in ordet to create a 'transformer' object for the selected data.
         /// </summary>
         /// <param name="property">The Item Property to transform</param>
-        public FormTransformValue(Inventory.ItemProperty property)
+        public FormTransformValue(InventoryItem.ItemProperty property)
         {
-            _type = InventoryItem.ItemPropertyType(property);
+            _property = property;
 
             InitializeComponent();
             PopulateComboBoxOperation();
@@ -47,7 +47,7 @@ namespace WLMerge
             }
 
             // If it's strings that will be transformed, only add is supported (add as in concatenate). Preselect and disable user selection.
-            if (_type == typeof(string))
+            if (InventoryItem.ItemPropertyType(_property) == typeof(string))
             {
                 comboBoxOperation.SelectedIndex = (int)TransformValueOperation.Add;
                 comboBoxOperation.Enabled = false;
@@ -66,9 +66,10 @@ namespace WLMerge
         private void buttonTransform_Click(object sender, EventArgs e)
         {
             // First validate the value entered
-            var validValue = ValidateTransformValue();
+            var validationResult = ValueValidator.Validate(textBoxTransformValue.Text, _property);
+            errorProviderTransformValue.SetError(textBoxTransformValue, validationResult);
 
-            if(!validValue)
+            if (!string.IsNullOrEmpty(validationResult))
             {
                 // Not a valid value
                 return;
@@ -77,7 +78,7 @@ namespace WLMerge
             // Create transformer
             var transformValue = textBoxTransformValue.Text;
             var operation = (TransformValueOperation)comboBoxOperation.SelectedIndex;
-            var transformer = new ValueTransformer(_type, transformValue, operation);
+            var transformer = new ValueTransformer(InventoryItem.ItemPropertyType(_property), transformValue, operation);
 
             // Notify listeners
             OnTransformValue(this, new TransformValueEventArgs(transformer));
@@ -95,41 +96,6 @@ namespace WLMerge
             buttonTransform.Enabled = ((ComboBox)sender).SelectedIndex >= 0
                 && textBoxTransformValue.Text != string.Empty;
 
-        }
-
-        // Validate the value entered. Validation depends on what type of values to transform.
-        private bool ValidateTransformValue()
-        {
-            if(_type == typeof(int))
-            {
-                try
-                {
-                    int x = int.Parse(textBoxTransformValue.Text);
-                    errorProviderTransformValue.SetError(textBoxTransformValue, "");
-                    return true;
-                }
-                catch //(Exception ex)
-                {
-                    errorProviderTransformValue.SetError(textBoxTransformValue, "Not an integer value.");
-                    return false;
-                }
-            } 
-            else if(_type == typeof(decimal))
-            {
-                try
-                {
-                    decimal x = decimal.Parse(textBoxTransformValue.Text);
-                    errorProviderTransformValue.SetError(textBoxTransformValue, "");
-                    return true;
-                }
-                catch //(Exception ex)
-                {
-                    errorProviderTransformValue.SetError(textBoxTransformValue, "Not a decimal value.");
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 }

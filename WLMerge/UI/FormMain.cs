@@ -94,7 +94,7 @@ namespace WLMerge
         private void ToggleEmptyColumnsVisible(bool hide)
         {
             // Check all columns
-            foreach(int columnIndex in Enum.GetValues(typeof(Inventory.ItemProperty)))
+            foreach(int columnIndex in Enum.GetValues(typeof(InventoryItem.ItemProperty)))
             {
                 // Assume it's empty
                 var columnEmpty = true;
@@ -212,7 +212,7 @@ namespace WLMerge
                 dataGridViewItems.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.ColumnHeader);
             }
 
-            dataGridViewItems.AutoResizeColumn((int)Inventory.ItemProperty.REMARKS, DataGridViewAutoSizeColumnMode.AllCells);
+            dataGridViewItems.AutoResizeColumn((int)InventoryItem.ItemProperty.REMARKS, DataGridViewAutoSizeColumnMode.AllCells);
 
             UpdateTitle();
         }
@@ -245,13 +245,13 @@ namespace WLMerge
         private void dataGridViewItems_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             // Item type will show a description as tooltip
-            if(e.ColumnIndex == (int)Inventory.ItemProperty.ITEMTYPE)
+            if(e.ColumnIndex == (int)InventoryItem.ItemProperty.ITEMTYPE)
             {
                 var itemTypeDescription = BricklinkItems.BricklinkItemTypeDescription((string)e.Value);
                 dataGridViewItems[e.ColumnIndex, e.RowIndex].ToolTipText = itemTypeDescription;
             }
             // Paint color column cells and show tooltip with color description
-            else if(e.ColumnIndex == (int)Inventory.ItemProperty.COLOR)
+            else if(e.ColumnIndex == (int)InventoryItem.ItemProperty.COLOR)
             {
                 // Colorize cell
                 var color = (int)e.Value;
@@ -263,10 +263,10 @@ namespace WLMerge
                 dataGridViewItems[e.ColumnIndex, e.RowIndex].ToolTipText = cInfo.Name;
             } 
             // Add a tool tip to item id's with URL that this cell will launch upon click
-            else if(e.ColumnIndex == (int)Inventory.ItemProperty.ITEMID)
+            else if(e.ColumnIndex == (int)InventoryItem.ItemProperty.ITEMID)
             {
                 var itemId = (string)e.Value;
-                var color = (int)dataGridViewItems[(int)Inventory.ItemProperty.COLOR, e.RowIndex].Value;
+                var color = (int)dataGridViewItems[(int)InventoryItem.ItemProperty.COLOR, e.RowIndex].Value;
                 var url = string.Format(BricklinkCatalogItemLink, itemId, color);
                 dataGridViewItems[e.ColumnIndex, e.RowIndex].ToolTipText = url;
             }
@@ -290,8 +290,8 @@ namespace WLMerge
             // If it's a cell with a link, launch the link
             if (dataGridViewItems[e.ColumnIndex, e.RowIndex].GetType() == typeof(DataGridViewLinkCell))
             {
-                var itemNo = dataGridViewItems[(int)Inventory.ItemProperty.ITEMID, e.RowIndex].Value.ToString();
-                var color = dataGridViewItems[(int)Inventory.ItemProperty.COLOR, e.RowIndex].Value.ToString();
+                var itemNo = dataGridViewItems[(int)InventoryItem.ItemProperty.ITEMID, e.RowIndex].Value.ToString();
+                var color = dataGridViewItems[(int)InventoryItem.ItemProperty.COLOR, e.RowIndex].Value.ToString();
                 var url = string.Format(BricklinkCatalogItemLink, itemNo, color);
                 System.Diagnostics.Process.Start(url);
             }
@@ -343,7 +343,7 @@ namespace WLMerge
         {
             var columnIndex = dataGridViewItems.SelectedCells[0].ColumnIndex;
 
-            var fsv = new FormSetValue();
+            var fsv = new FormSetValue((InventoryItem.ItemProperty)columnIndex);
             fsv.NewValue += (snd, ea) => { SetColumnValues(columnIndex, ea.NewValue); };
             fsv.ShowDialog();
         }
@@ -352,7 +352,7 @@ namespace WLMerge
         private void toolStripMenuItemTransform_Click(object sender, EventArgs e)
         {
             var columnIndex = dataGridViewItems.SelectedCells[0].ColumnIndex;
-            var ftv = new FormTransformValue((Inventory.ItemProperty)columnIndex);
+            var ftv = new FormTransformValue((InventoryItem.ItemProperty)columnIndex);
             ftv.TransformValue += (snd, ea) => { TransformColumnValues(columnIndex, ea.Transformer ); };
             ftv.ShowDialog();
         }
@@ -401,7 +401,7 @@ namespace WLMerge
         // has changed...
         private void dataGridViewItems_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (_itemList != null && e.ColumnIndex == (int)Inventory.ItemProperty.MINQTY)
+            if (_itemList != null && e.ColumnIndex == (int)InventoryItem.ItemProperty.MINQTY)
             {
                 _pieceCount = _itemList.Sum(i => i.MinQty);
                 UpdateTitle();

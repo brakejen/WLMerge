@@ -17,25 +17,6 @@ namespace WLMerge
     public class Inventory
     {
         /// <summary>
-        /// Each element represent a unique property of an InventoryItem.
-        /// Maps each property to a unique int 0-10.
-        /// </summary>
-        public enum ItemProperty
-        {
-            ITEMTYPE = 0,
-            ITEMID = 1,
-            COLOR = 2,
-            MAXPRICE = 3,
-            MINQTY = 4,
-            QTYFILLED = 5,
-            CONDITION = 6,
-            REMARKS = 7,
-            NOTIFY = 8,
-            WANTEDSHOW = 9,
-            WANTEDLISTID = 10,
-        }
-
-        /// <summary>
         /// Write this Inventory to a string representing the XML-cod for it. 
         /// </summary>
         public string ToXml()
@@ -73,11 +54,11 @@ namespace WLMerge
         {
             get
             {
-                return this._items;
+                return _items;
             }
             set
             {
-                this._items = value;
+                _items = value;
             }
         }
     }
@@ -87,6 +68,25 @@ namespace WLMerge
     [XmlType(AnonymousType = true)]
     public class InventoryItem : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Each element represent a unique property of an InventoryItem.
+        /// Maps each property to a unique int 0-10.
+        /// </summary>
+        public enum ItemProperty
+        {
+            ITEMTYPE = 0,
+            ITEMID = 1,
+            COLOR = 2,
+            MAXPRICE = 3,
+            MINQTY = 4,
+            QTYFILLED = 5,
+            CONDITION = 6,
+            REMARKS = 7,
+            NOTIFY = 8,
+            WANTEDSHOW = 9,
+            WANTEDLISTID = 10,
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string name = "")
@@ -121,12 +121,12 @@ namespace WLMerge
         {
             get
             {
-                return this._itemType;
+                return _itemType;
             }
             set
             {
-                this._itemType = value;
-                OnPropertyChanged(Inventory.ItemProperty.ITEMTYPE.ToString());
+                _itemType = value;
+                OnPropertyChanged(ItemProperty.ITEMTYPE.ToString());
             }
         }
 
@@ -135,12 +135,12 @@ namespace WLMerge
         {
             get
             {
-                return this._itemId;
+                return _itemId;
             }
             set
             {
-                this._itemId = value;
-                OnPropertyChanged(Inventory.ItemProperty.ITEMID.ToString());
+                _itemId = value;
+                OnPropertyChanged(ItemProperty.ITEMID.ToString());
             }
         }
 
@@ -149,12 +149,12 @@ namespace WLMerge
         {
             get
             {
-                return this._color;
+                return _color;
             }
             set
             {
-                this._color = value;
-                OnPropertyChanged(Inventory.ItemProperty.COLOR.ToString());
+                _color = value;
+                OnPropertyChanged(ItemProperty.COLOR.ToString());
             }
         }
 
@@ -163,12 +163,12 @@ namespace WLMerge
         {
             get
             {
-                return this._maxPrice;
+                return _maxPrice;
             }
             set
             {
-                this._maxPrice = value;
-                OnPropertyChanged(Inventory.ItemProperty.MAXPRICE.ToString());
+                _maxPrice = value;
+                OnPropertyChanged(ItemProperty.MAXPRICE.ToString());
             }
         }
 
@@ -177,12 +177,12 @@ namespace WLMerge
         {
             get
             {
-                return this._minQty;
+                return _minQty;
             }
             set
             {
-                this._minQty = value;
-                OnPropertyChanged(Inventory.ItemProperty.MINQTY.ToString());
+                _minQty = value;
+                OnPropertyChanged(ItemProperty.MINQTY.ToString());
             }
         }
 
@@ -192,12 +192,12 @@ namespace WLMerge
         {
             get
             {
-                return this._qtyFilled;
+                return _qtyFilled;
             }
             set
             {
-                this._qtyFilled = value;
-                OnPropertyChanged(Inventory.ItemProperty.QTYFILLED.ToString());
+                _qtyFilled = value;
+                OnPropertyChanged(ItemProperty.QTYFILLED.ToString());
             }
         }
 
@@ -206,12 +206,12 @@ namespace WLMerge
         {
             get
             {
-                return this._condition;
+                return _condition;
             }
             set
             {
-                this._condition = value;
-                OnPropertyChanged(Inventory.ItemProperty.CONDITION.ToString());
+                _condition = value;
+                OnPropertyChanged(ItemProperty.CONDITION.ToString());
             }
         }
 
@@ -220,12 +220,12 @@ namespace WLMerge
         {
             get
             {
-                return this._remarks;
+                return _remarks;
             }
             set
             {
-                this._remarks = value;
-                OnPropertyChanged(Inventory.ItemProperty.REMARKS.ToString());
+                _remarks = value;
+                OnPropertyChanged(ItemProperty.REMARKS.ToString());
             }
         }
 
@@ -234,12 +234,12 @@ namespace WLMerge
         {
             get
             {
-                return this._notify;
+                return _notify;
             }
             set
             {
-                this._notify = value;
-                OnPropertyChanged(Inventory.ItemProperty.NOTIFY.ToString());
+                _notify = value;
+                OnPropertyChanged(ItemProperty.NOTIFY.ToString());
             }
         }
 
@@ -248,12 +248,12 @@ namespace WLMerge
         {
             get
             {
-                return this._wantedShow;
+                return _wantedShow;
             }
             set
             {
-                this._wantedShow = value;
-                OnPropertyChanged(Inventory.ItemProperty.WANTEDSHOW.ToString());
+                _wantedShow = value;
+                OnPropertyChanged(ItemProperty.WANTEDSHOW.ToString());
             }
         }
 
@@ -262,32 +262,32 @@ namespace WLMerge
         {
             get
             {
-                return this._wantedListId;
+                return _wantedListId;
             }
             set
             {
-                this._wantedListId = value;
-                OnPropertyChanged(Inventory.ItemProperty.WANTEDSHOW.ToString());
+                _wantedListId = value;
+                OnPropertyChanged(ItemProperty.WANTEDSHOW.ToString());
             }
         }
 
-        public static Type ItemPropertyType(Inventory.ItemProperty itemProperty)
+        public static Type ItemPropertyType(ItemProperty itemProperty)
         {
             switch (itemProperty)
             {
-                case Inventory.ItemProperty.ITEMTYPE:
-                case Inventory.ItemProperty.ITEMID:
-                case Inventory.ItemProperty.CONDITION:
-                case Inventory.ItemProperty.REMARKS:
-                case Inventory.ItemProperty.NOTIFY:
-                case Inventory.ItemProperty.WANTEDSHOW:
-                case Inventory.ItemProperty.WANTEDLISTID:
+                case ItemProperty.ITEMTYPE:
+                case ItemProperty.ITEMID:
+                case ItemProperty.CONDITION:
+                case ItemProperty.REMARKS:
+                case ItemProperty.NOTIFY:
+                case ItemProperty.WANTEDSHOW:
+                case ItemProperty.WANTEDLISTID:
                     return typeof(string);
-                case Inventory.ItemProperty.COLOR:
-                case Inventory.ItemProperty.MINQTY:
-                case Inventory.ItemProperty.QTYFILLED:
+                case ItemProperty.COLOR:
+                case ItemProperty.MINQTY:
+                case ItemProperty.QTYFILLED:
                     return typeof(int);
-                case Inventory.ItemProperty.MAXPRICE:
+                case ItemProperty.MAXPRICE:
                     return  typeof(decimal);
                 default:
                     throw new ArgumentException("ItemPropertyType");

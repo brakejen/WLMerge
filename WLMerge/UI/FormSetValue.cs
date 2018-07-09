@@ -16,6 +16,8 @@ namespace WLMerge
     /// </summary>
     public partial class FormSetValue : Form
     {
+        private InventoryItem.ItemProperty _property;
+
         /// <summary>
         /// Event raised when user enters a value and confirms
         /// </summary>
@@ -30,8 +32,10 @@ namespace WLMerge
         /// <summary>
         /// Creates a new form to enter new values in
         /// </summary>
-        public FormSetValue()
+        public FormSetValue(InventoryItem.ItemProperty property)
         {
+            _property = property;
+
             InitializeComponent();
         }
 
@@ -42,6 +46,16 @@ namespace WLMerge
 
         private void buttonSet_Click(object sender, EventArgs e)
         {
+            var validationResult = ValueValidator.Validate(textBoxNewValue.Text, _property);
+            errorProviderSetValue.SetError(textBoxNewValue, validationResult);
+
+            if (!string.IsNullOrEmpty(validationResult))
+            {
+                // Not a valid value
+                return;
+            }
+
+            // Notify listeners
             OnNewValue(this, new NewValueEventArgs(textBoxNewValue.Text));
             Close();
         }

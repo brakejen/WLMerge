@@ -28,11 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tableLayoutPanelSetValue = new System.Windows.Forms.TableLayoutPanel();
             this.buttonSet = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.textBoxNewValue = new System.Windows.Forms.TextBox();
+            this.errorProviderSetValue = new System.Windows.Forms.ErrorProvider(this.components);
             this.tableLayoutPanelSetValue.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProviderSetValue)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanelSetValue
@@ -85,13 +88,17 @@
             // 
             // textBoxNewValue
             // 
-            this.textBoxNewValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxNewValue.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.tableLayoutPanelSetValue.SetColumnSpan(this.textBoxNewValue, 2);
             this.textBoxNewValue.Location = new System.Drawing.Point(3, 10);
             this.textBoxNewValue.Name = "textBoxNewValue";
-            this.textBoxNewValue.Size = new System.Drawing.Size(252, 22);
+            this.textBoxNewValue.Size = new System.Drawing.Size(226, 22);
             this.textBoxNewValue.TabIndex = 2;
             this.textBoxNewValue.TextChanged += new System.EventHandler(this.textBoxNewValue_TextChanged);
+            // 
+            // errorProviderSetValue
+            // 
+            this.errorProviderSetValue.ContainerControl = this;
             // 
             // FormSetValue
             // 
@@ -108,6 +115,7 @@
             this.Text = "Set values";
             this.tableLayoutPanelSetValue.ResumeLayout(false);
             this.tableLayoutPanelSetValue.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProviderSetValue)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -118,5 +126,6 @@
         private System.Windows.Forms.Button buttonSet;
         private System.Windows.Forms.TextBox textBoxNewValue;
         private System.Windows.Forms.Button buttonCancel;
+        private System.Windows.Forms.ErrorProvider errorProviderSetValue;
     }
 }
