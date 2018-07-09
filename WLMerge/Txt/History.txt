@@ -1,4 +1,9 @@
-﻿2018-07-08
+﻿2018-07-09
+1.2.2
+- UI tweaks
+- Build script fixed
+
+2018-07-08
 1.2.1
 - Wrong path for .txt-files if installed in PF-folder
 

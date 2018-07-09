@@ -33,17 +33,6 @@
             this.buttonBrowsForFile = new System.Windows.Forms.Button();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.dataGridViewItems = new System.Windows.Forms.DataGridView();
-            this.buttonClear = new System.Windows.Forms.Button();
-            this.buttonExit = new System.Windows.Forms.Button();
-            this.buttonAbout = new System.Windows.Forms.Button();
-            this.checkBoxHideEmptyColumns = new System.Windows.Forms.CheckBox();
-            this.buttonExport = new System.Windows.Forms.Button();
-            this.openFileDialogXml = new System.Windows.Forms.OpenFileDialog();
-            this.toolTipMain = new System.Windows.Forms.ToolTip(this.components);
-            this.contextMenuStripDgvRightClick = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItemClear = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemSet = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemTransform = new System.Windows.Forms.ToolStripMenuItem();
             this.itemTypeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.itemIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewLinkColumn();
             this.colorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -56,10 +45,21 @@
             this.wantedShowDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.wantedListIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.inventoryItemListBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.buttonExit = new System.Windows.Forms.Button();
+            this.buttonAbout = new System.Windows.Forms.Button();
+            this.buttonClear = new System.Windows.Forms.Button();
+            this.buttonExport = new System.Windows.Forms.Button();
+            this.checkBoxHideEmptyColumns = new System.Windows.Forms.CheckBox();
+            this.openFileDialogXml = new System.Windows.Forms.OpenFileDialog();
+            this.toolTipMain = new System.Windows.Forms.ToolTip(this.components);
+            this.contextMenuStripDgvRightClick = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItemClear = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemSet = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemTransform = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewItems)).BeginInit();
-            this.contextMenuStripDgvRightClick.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.inventoryItemListBindingSource)).BeginInit();
+            this.contextMenuStripDgvRightClick.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonBrowsForFile
@@ -138,104 +138,6 @@
             this.dataGridViewItems.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataGridViewItems_RowPostPaint);
             this.dataGridViewItems.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridViewItems_RowsAdded);
             this.dataGridViewItems.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridViewItems_KeyDown);
-            // 
-            // buttonClear
-            // 
-            this.buttonClear.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.buttonClear.Location = new System.Drawing.Point(155, 485);
-            this.buttonClear.Name = "buttonClear";
-            this.buttonClear.Size = new System.Drawing.Size(142, 37);
-            this.buttonClear.TabIndex = 3;
-            this.buttonClear.Text = "&Clear";
-            this.toolTipMain.SetToolTip(this.buttonClear, "Clear all items from list");
-            this.buttonClear.UseVisualStyleBackColor = true;
-            this.buttonClear.Click += new System.EventHandler(this.buttonClear_Click);
-            // 
-            // buttonExit
-            // 
-            this.buttonExit.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.buttonExit.Location = new System.Drawing.Point(610, 485);
-            this.buttonExit.Name = "buttonExit";
-            this.buttonExit.Size = new System.Drawing.Size(142, 37);
-            this.buttonExit.TabIndex = 5;
-            this.buttonExit.Text = "E&xit";
-            this.buttonExit.UseVisualStyleBackColor = true;
-            this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            // 
-            // buttonAbout
-            // 
-            this.buttonAbout.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.buttonAbout.Location = new System.Drawing.Point(610, 6);
-            this.buttonAbout.Name = "buttonAbout";
-            this.buttonAbout.Size = new System.Drawing.Size(142, 37);
-            this.buttonAbout.TabIndex = 7;
-            this.buttonAbout.Text = "&About";
-            this.toolTipMain.SetToolTip(this.buttonAbout, "Clear all items from list");
-            this.buttonAbout.UseVisualStyleBackColor = true;
-            this.buttonAbout.Click += new System.EventHandler(this.buttonAbout_Click);
-            // 
-            // checkBoxHideEmptyColumns
-            // 
-            this.checkBoxHideEmptyColumns.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.checkBoxHideEmptyColumns.Appearance = System.Windows.Forms.Appearance.Button;
-            this.checkBoxHideEmptyColumns.Location = new System.Drawing.Point(306, 485);
-            this.checkBoxHideEmptyColumns.Name = "checkBoxHideEmptyColumns";
-            this.checkBoxHideEmptyColumns.Size = new System.Drawing.Size(142, 37);
-            this.checkBoxHideEmptyColumns.TabIndex = 6;
-            this.checkBoxHideEmptyColumns.Text = "&Hide Empty";
-            this.checkBoxHideEmptyColumns.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.toolTipMain.SetToolTip(this.checkBoxHideEmptyColumns, "Hide empty columns (or show if they are already hidden)");
-            this.checkBoxHideEmptyColumns.UseVisualStyleBackColor = true;
-            this.checkBoxHideEmptyColumns.CheckedChanged += new System.EventHandler(this.checkBoxHideEmptyColumns_CheckedChanged);
-            // 
-            // buttonExport
-            // 
-            this.buttonExport.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.buttonExport.Location = new System.Drawing.Point(457, 485);
-            this.buttonExport.Name = "buttonExport";
-            this.buttonExport.Size = new System.Drawing.Size(142, 37);
-            this.buttonExport.TabIndex = 4;
-            this.buttonExport.Text = "&Export";
-            this.toolTipMain.SetToolTip(this.buttonExport, "Export current list to XML (will be copied to clipbook)");
-            this.buttonExport.UseVisualStyleBackColor = true;
-            this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
-            // 
-            // openFileDialogXml
-            // 
-            this.openFileDialogXml.Filter = "XML files|*.xml";
-            this.openFileDialogXml.Multiselect = true;
-            this.openFileDialogXml.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialogXml_FileOk);
-            // 
-            // contextMenuStripDgvRightClick
-            // 
-            this.contextMenuStripDgvRightClick.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contextMenuStripDgvRightClick.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemClear,
-            this.toolStripMenuItemSet,
-            this.toolStripMenuItemTransform});
-            this.contextMenuStripDgvRightClick.Name = "contextMenuStripDgvRightClick";
-            this.contextMenuStripDgvRightClick.Size = new System.Drawing.Size(199, 76);
-            // 
-            // toolStripMenuItemClear
-            // 
-            this.toolStripMenuItemClear.Name = "toolStripMenuItemClear";
-            this.toolStripMenuItemClear.Size = new System.Drawing.Size(198, 24);
-            this.toolStripMenuItemClear.Text = "Clear column";
-            this.toolStripMenuItemClear.Click += new System.EventHandler(this.toolStripMenuItemClear_Click);
-            // 
-            // toolStripMenuItemSet
-            // 
-            this.toolStripMenuItemSet.Name = "toolStripMenuItemSet";
-            this.toolStripMenuItemSet.Size = new System.Drawing.Size(198, 24);
-            this.toolStripMenuItemSet.Text = "Set values...";
-            this.toolStripMenuItemSet.Click += new System.EventHandler(this.toolStripMenuItemSet_Click);
-            // 
-            // toolStripMenuItemTransform
-            // 
-            this.toolStripMenuItemTransform.Name = "toolStripMenuItemTransform";
-            this.toolStripMenuItemTransform.Size = new System.Drawing.Size(198, 24);
-            this.toolStripMenuItemTransform.Text = "Transform values...";
-            this.toolStripMenuItemTransform.Click += new System.EventHandler(this.toolStripMenuItemTransform_Click);
             // 
             // itemTypeDataGridViewTextBoxColumn
             // 
@@ -323,6 +225,103 @@
             // 
             this.inventoryItemListBindingSource.DataSource = typeof(WLMerge.InventoryItemList);
             // 
+            // buttonExit
+            // 
+            this.buttonExit.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.buttonExit.Location = new System.Drawing.Point(610, 485);
+            this.buttonExit.Name = "buttonExit";
+            this.buttonExit.Size = new System.Drawing.Size(142, 37);
+            this.buttonExit.TabIndex = 5;
+            this.buttonExit.Text = "E&xit";
+            this.buttonExit.UseVisualStyleBackColor = true;
+            this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
+            // 
+            // buttonAbout
+            // 
+            this.buttonAbout.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.buttonAbout.Location = new System.Drawing.Point(610, 6);
+            this.buttonAbout.Name = "buttonAbout";
+            this.buttonAbout.Size = new System.Drawing.Size(142, 37);
+            this.buttonAbout.TabIndex = 7;
+            this.buttonAbout.Text = "&About";
+            this.toolTipMain.SetToolTip(this.buttonAbout, "Clear all items from list");
+            this.buttonAbout.UseVisualStyleBackColor = true;
+            this.buttonAbout.Click += new System.EventHandler(this.buttonAbout_Click);
+            // 
+            // buttonClear
+            // 
+            this.buttonClear.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.buttonClear.Location = new System.Drawing.Point(155, 485);
+            this.buttonClear.Name = "buttonClear";
+            this.buttonClear.Size = new System.Drawing.Size(142, 37);
+            this.buttonClear.TabIndex = 3;
+            this.buttonClear.Text = "&Clear";
+            this.toolTipMain.SetToolTip(this.buttonClear, "Clear all items from list");
+            this.buttonClear.UseVisualStyleBackColor = true;
+            this.buttonClear.Click += new System.EventHandler(this.buttonClear_Click);
+            // 
+            // buttonExport
+            // 
+            this.buttonExport.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.buttonExport.Location = new System.Drawing.Point(457, 485);
+            this.buttonExport.Name = "buttonExport";
+            this.buttonExport.Size = new System.Drawing.Size(142, 37);
+            this.buttonExport.TabIndex = 4;
+            this.buttonExport.Text = "&Export";
+            this.toolTipMain.SetToolTip(this.buttonExport, "Export current list to XML (will be copied to clipbook)");
+            this.buttonExport.UseVisualStyleBackColor = true;
+            this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
+            // 
+            // checkBoxHideEmptyColumns
+            // 
+            this.checkBoxHideEmptyColumns.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.checkBoxHideEmptyColumns.Appearance = System.Windows.Forms.Appearance.Button;
+            this.checkBoxHideEmptyColumns.Location = new System.Drawing.Point(306, 485);
+            this.checkBoxHideEmptyColumns.Name = "checkBoxHideEmptyColumns";
+            this.checkBoxHideEmptyColumns.Size = new System.Drawing.Size(142, 37);
+            this.checkBoxHideEmptyColumns.TabIndex = 6;
+            this.checkBoxHideEmptyColumns.Text = "&Hide Empty";
+            this.checkBoxHideEmptyColumns.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTipMain.SetToolTip(this.checkBoxHideEmptyColumns, "Hide empty columns (or show if they are already hidden)");
+            this.checkBoxHideEmptyColumns.UseVisualStyleBackColor = true;
+            this.checkBoxHideEmptyColumns.CheckedChanged += new System.EventHandler(this.checkBoxHideEmptyColumns_CheckedChanged);
+            // 
+            // openFileDialogXml
+            // 
+            this.openFileDialogXml.Filter = "XML files|*.xml";
+            this.openFileDialogXml.Multiselect = true;
+            // 
+            // contextMenuStripDgvRightClick
+            // 
+            this.contextMenuStripDgvRightClick.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStripDgvRightClick.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemClear,
+            this.toolStripMenuItemSet,
+            this.toolStripMenuItemTransform});
+            this.contextMenuStripDgvRightClick.Name = "contextMenuStripDgvRightClick";
+            this.contextMenuStripDgvRightClick.Size = new System.Drawing.Size(199, 76);
+            // 
+            // toolStripMenuItemClear
+            // 
+            this.toolStripMenuItemClear.Name = "toolStripMenuItemClear";
+            this.toolStripMenuItemClear.Size = new System.Drawing.Size(198, 24);
+            this.toolStripMenuItemClear.Text = "Clear column";
+            this.toolStripMenuItemClear.Click += new System.EventHandler(this.toolStripMenuItemClear_Click);
+            // 
+            // toolStripMenuItemSet
+            // 
+            this.toolStripMenuItemSet.Name = "toolStripMenuItemSet";
+            this.toolStripMenuItemSet.Size = new System.Drawing.Size(198, 24);
+            this.toolStripMenuItemSet.Text = "Set values...";
+            this.toolStripMenuItemSet.Click += new System.EventHandler(this.toolStripMenuItemSet_Click);
+            // 
+            // toolStripMenuItemTransform
+            // 
+            this.toolStripMenuItemTransform.Name = "toolStripMenuItemTransform";
+            this.toolStripMenuItemTransform.Size = new System.Drawing.Size(198, 24);
+            this.toolStripMenuItemTransform.Text = "Transform values...";
+            this.toolStripMenuItemTransform.Click += new System.EventHandler(this.toolStripMenuItemTransform_Click);
+            // 
             // FormMain
             // 
             this.AllowDrop = true;
@@ -339,8 +338,8 @@
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.FormMain_DragEnter);
             this.tableLayoutPanelMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewItems)).EndInit();
-            this.contextMenuStripDgvRightClick.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.inventoryItemListBindingSource)).EndInit();
+            this.contextMenuStripDgvRightClick.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

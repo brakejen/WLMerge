@@ -1,9 +1,7 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace WLMerge
@@ -32,16 +30,19 @@ namespace WLMerge
             ResetForm();
         }
 
+        // Check for first usage and show help if so
         private void FirstTimeUseStep()
         {
             var versionHistory = Program.VersionHistory;
 
             if (versionHistory == Program.History.FirstRun)
             {
+                // This is the first time the user runs this program, show ReadMe which contain instructions
                 new FormAbout(FormAbout.SelectedView.ReadMe).ShowDialog();
             }
             else if (versionHistory == Program.History.NewVersion)
             {
+                // This is the first time the user runs this version of the program, show revision history
                 new FormAbout(FormAbout.SelectedView.History).ShowDialog();
             }
         }
@@ -148,13 +149,6 @@ namespace WLMerge
             UpdateTitle();
         }
 
-
-        // ToDo Remove
-        // Event: tasks to do when form (ie app) is loads
-        private void FormMain_Load(object sender, EventArgs e)
-        {
-        }
-
         // Event: determine if content being dragged onto form is of interest
         private void FormMain_DragEnter(object sender, DragEventArgs e)
         { 
@@ -183,25 +177,33 @@ namespace WLMerge
         private void FormMain_DragDrop(object sender, DragEventArgs e) => HandleXmlFiles((string[])e.Data.GetData(DataFormats.FileDrop));
 
         // Event: browse for files button clicked
-        private void buttonBrowsForFile_Click(object sender, EventArgs e) => openFileDialogXml.ShowDialog();
-
-        // Event: file (or files) in browse for file dialog have been successfully selected
-        private void openFileDialogXml_FileOk(object sender, CancelEventArgs e)
+        private void buttonBrowsForFile_Click(object sender, EventArgs e)
         {
-            HandleXmlFiles(openFileDialogXml.FileNames);
+            // This instead of FileOk event to avoid dialog to hover while data is loading
+            if (openFileDialogXml.ShowDialog() == DialogResult.OK)
+            {
+                HandleXmlFiles(openFileDialogXml.FileNames);
+            }
         }
 
         // Event: Rows have been added to the table. Make adjustments to form and table as data have been added
         private void dataGridViewItems_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
-            // Resize column widths
-            dataGridViewItems.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.ColumnHeader);
-            dataGridViewItems.AutoResizeColumn((int)Inventory.ItemProperty.REMARKS, DataGridViewAutoSizeColumnMode.AllCells);
+            if (_itemList.Count == 1)
+            {
+                // Enable buttons 
+                buttonExport.Enabled = buttonExport.Enabled = checkBoxHideEmptyColumns.Enabled = true; ;
 
-            // Enable buttons if at least one item have been added
-            buttonExport.Enabled = _itemList != null && _itemList.Count > 0;
-            buttonClear.Enabled = buttonExport.Enabled;
-            checkBoxHideEmptyColumns.Enabled = buttonExport.Enabled;
+                // Adjust headers just once, they will be assigned when first row is loaded
+                dataGridViewItems.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.ColumnHeader);
+            }
+
+            if (_itemList.Count == dataGridViewItems.Rows.Count)
+            {
+                // Only adjust width of remarks column when occationally - if items have been added but UI has not yet filled
+                // table, we wait. This will prevent horizontal scrollbar from flickering
+                dataGridViewItems.AutoResizeColumn((int)Inventory.ItemProperty.REMARKS, DataGridViewAutoSizeColumnMode.AllCells);
+            }
 
             UpdateTitle();
         }
