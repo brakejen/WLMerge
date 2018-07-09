@@ -4,8 +4,8 @@ using System.IO;
 
 namespace WLMerge
 {
-
-    // Code in this file taken from http://code.cheesydesign.com/?p=572 
+    // Credits for this file: John Stewien
+    // Code taken from http://code.cheesydesign.com/?p=572 
     // only minor modificatins made.
 
     /// <summary>

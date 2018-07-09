@@ -7,11 +7,17 @@ using System.Windows.Forms;
 namespace WLMerge
 {
     public partial class FormMain : Form
-    { 
+    {
+        #region Private Instance Variables
+
         private const string BricklinkCatalogItemLink = "https://www.bricklink.com/v2/catalog/catalogitem.page?P={0}&C={1}";
         private InventoryItemList _itemList;
         private int _fileCount;
         private int _pieceCount;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Creates and initializes the main form of the app
@@ -29,6 +35,10 @@ namespace WLMerge
             // Perform a UI reset
             ResetForm();
         }
+
+        #endregion
+
+        #region Private Methods
 
         // Check for first usage and show help if so
         private void FirstTimeUseStep()
@@ -134,7 +144,11 @@ namespace WLMerge
                 dataGridViewItems[columnIndex, rowIndex].Value = newValue;
             }
         }
-    
+
+        #endregion
+
+        #region Event handling
+
         // Event: rows have been removed, update counter in header accordingly
         private void _itemList_ItemRemoved(object sender, ItemRemovedEventArgs e)
         {
@@ -375,21 +389,25 @@ namespace WLMerge
             }
         }
 
+        // Event: Handle about button click, ie show Abuot Dialog
         private void buttonAbout_Click(object sender, EventArgs e) => new FormAbout().ShowDialog();
 
-        private void FormMain_Shown(object sender, EventArgs e)
-        {
-            FirstTimeUseStep();
-        }
+        // Event: main form is shown. Check for first usage
+        private void FormMain_Shown(object sender, EventArgs e) => FirstTimeUseStep();
 
+        // Event: cell change; we're interested in specific column only. This is a hack since I can't get notification of binding-
+        // list changes to work. I get notification when it's changed but no way of getting value before *and* after the change, only either
+        // This makes it impossible to change Piece Count of form correctly. So as for now: recount *all* rows when a cell in the piece column
+        // has changed...
         private void dataGridViewItems_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (_itemList != null && e.ColumnIndex == (int)Inventory.ItemProperty.MINQTY)
             {
-                var pieceCount = _itemList.Sum(i => i.MinQty);
-                _pieceCount = pieceCount;
+                _pieceCount = _itemList.Sum(i => i.MinQty);
                 UpdateTitle();
             }
         }
+
+        #endregion
     }
 }
