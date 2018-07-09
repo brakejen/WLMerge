@@ -198,12 +198,7 @@ namespace WLMerge
                 dataGridViewItems.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.ColumnHeader);
             }
 
-            if (_itemList.Count == dataGridViewItems.Rows.Count)
-            {
-                // Only adjust width of remarks column when occationally - if items have been added but UI has not yet filled
-                // table, we wait. This will prevent horizontal scrollbar from flickering
-                dataGridViewItems.AutoResizeColumn((int)Inventory.ItemProperty.REMARKS, DataGridViewAutoSizeColumnMode.AllCells);
-            }
+            dataGridViewItems.AutoResizeColumn((int)Inventory.ItemProperty.REMARKS, DataGridViewAutoSizeColumnMode.AllCells);
 
             UpdateTitle();
         }
