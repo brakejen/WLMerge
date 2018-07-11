@@ -63,10 +63,14 @@ namespace WLMerge
         }
     }
 
+    /// <summary>
+    /// Represents an Inventory Item in a Wanted List. This is the main data carrier in the app, as an Inventory Item
+    /// is a row in the main table and represent a row in a Wanted List on Bricklink.
+    /// </summary>
     [Serializable()]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true)]
-    public class InventoryItem : INotifyPropertyChanged
+    public class InventoryItem 
     {
         /// <summary>
         /// Each element represent a unique property of an InventoryItem.
@@ -87,12 +91,6 @@ namespace WLMerge
             WANTEDLISTID = 10,
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string name = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
 
         private string _itemType;
 
@@ -126,7 +124,6 @@ namespace WLMerge
             set
             {
                 _itemType = value;
-                OnPropertyChanged(ItemProperty.ITEMTYPE.ToString());
             }
         }
 
@@ -140,7 +137,6 @@ namespace WLMerge
             set
             {
                 _itemId = value;
-                OnPropertyChanged(ItemProperty.ITEMID.ToString());
             }
         }
 
@@ -154,7 +150,6 @@ namespace WLMerge
             set
             {
                 _color = value;
-                OnPropertyChanged(ItemProperty.COLOR.ToString());
             }
         }
 
@@ -168,7 +163,6 @@ namespace WLMerge
             set
             {
                 _maxPrice = value;
-                OnPropertyChanged(ItemProperty.MAXPRICE.ToString());
             }
         }
 
@@ -182,7 +176,6 @@ namespace WLMerge
             set
             {
                 _minQty = value;
-                OnPropertyChanged(ItemProperty.MINQTY.ToString());
             }
         }
 
@@ -197,7 +190,6 @@ namespace WLMerge
             set
             {
                 _qtyFilled = value;
-                OnPropertyChanged(ItemProperty.QTYFILLED.ToString());
             }
         }
 
@@ -211,7 +203,6 @@ namespace WLMerge
             set
             {
                 _condition = value;
-                OnPropertyChanged(ItemProperty.CONDITION.ToString());
             }
         }
 
@@ -225,7 +216,6 @@ namespace WLMerge
             set
             {
                 _remarks = value;
-                OnPropertyChanged(ItemProperty.REMARKS.ToString());
             }
         }
 
@@ -239,7 +229,6 @@ namespace WLMerge
             set
             {
                 _notify = value;
-                OnPropertyChanged(ItemProperty.NOTIFY.ToString());
             }
         }
 
@@ -253,7 +242,6 @@ namespace WLMerge
             set
             {
                 _wantedShow = value;
-                OnPropertyChanged(ItemProperty.WANTEDSHOW.ToString());
             }
         }
 
@@ -267,7 +255,6 @@ namespace WLMerge
             set
             {
                 _wantedListId = value;
-                OnPropertyChanged(ItemProperty.WANTEDSHOW.ToString());
             }
         }
 
