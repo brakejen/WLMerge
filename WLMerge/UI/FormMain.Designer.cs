@@ -33,29 +33,31 @@
             this.buttonBrowsForFile = new System.Windows.Forms.Button();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.dataGridViewItems = new System.Windows.Forms.DataGridView();
-            this.itemTypeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.itemIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewLinkColumn();
-            this.colorDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.maxPriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.minQtyDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.qtyFilledDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.conditionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.remarksDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.notifyDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.wantedShowDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.wantedListIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.inventoryItemListBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.buttonExit = new System.Windows.Forms.Button();
             this.buttonAbout = new System.Windows.Forms.Button();
-            this.buttonClear = new System.Windows.Forms.Button();
             this.buttonExport = new System.Windows.Forms.Button();
             this.checkBoxHideEmptyColumns = new System.Windows.Forms.CheckBox();
+            this.buttonClear = new System.Windows.Forms.Button();
+            this.buttonDownloadImages = new System.Windows.Forms.Button();
             this.openFileDialogXml = new System.Windows.Forms.OpenFileDialog();
             this.toolTipMain = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStripDgvRightClick = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemClear = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemSet = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemTransform = new System.Windows.Forms.ToolStripMenuItem();
+            this.ItemType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Image = new System.Windows.Forms.DataGridViewImageColumn();
+            this.ItemId = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.Color = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MaxPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MinQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.QtyFilled = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Condition = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Remarks = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Notify = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WantedShow = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WantedListId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewItems)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.inventoryItemListBindingSource)).BeginInit();
@@ -65,7 +67,7 @@
             // buttonBrowsForFile
             // 
             this.buttonBrowsForFile.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.buttonBrowsForFile.Location = new System.Drawing.Point(4, 485);
+            this.buttonBrowsForFile.Location = new System.Drawing.Point(4, 6);
             this.buttonBrowsForFile.Name = "buttonBrowsForFile";
             this.buttonBrowsForFile.Size = new System.Drawing.Size(142, 37);
             this.buttonBrowsForFile.TabIndex = 2;
@@ -85,13 +87,14 @@
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanelMain.Controls.Add(this.buttonBrowsForFile, 0, 2);
             this.tableLayoutPanelMain.Controls.Add(this.dataGridViewItems, 0, 1);
             this.tableLayoutPanelMain.Controls.Add(this.buttonExit, 4, 2);
-            this.tableLayoutPanelMain.Controls.Add(this.buttonAbout, 4, 0);
-            this.tableLayoutPanelMain.Controls.Add(this.buttonClear, 1, 2);
-            this.tableLayoutPanelMain.Controls.Add(this.buttonExport, 3, 2);
-            this.tableLayoutPanelMain.Controls.Add(this.checkBoxHideEmptyColumns, 2, 2);
+            this.tableLayoutPanelMain.Controls.Add(this.buttonAbout, 3, 2);
+            this.tableLayoutPanelMain.Controls.Add(this.buttonBrowsForFile, 0, 0);
+            this.tableLayoutPanelMain.Controls.Add(this.buttonExport, 1, 0);
+            this.tableLayoutPanelMain.Controls.Add(this.checkBoxHideEmptyColumns, 3, 0);
+            this.tableLayoutPanelMain.Controls.Add(this.buttonClear, 2, 0);
+            this.tableLayoutPanelMain.Controls.Add(this.buttonDownloadImages, 4, 0);
             this.tableLayoutPanelMain.Location = new System.Drawing.Point(12, 12);
             this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
             this.tableLayoutPanelMain.RowCount = 3;
@@ -112,17 +115,18 @@
             this.dataGridViewItems.AutoGenerateColumns = false;
             this.dataGridViewItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewItems.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.itemTypeDataGridViewTextBoxColumn,
-            this.itemIdDataGridViewTextBoxColumn,
-            this.colorDataGridViewTextBoxColumn,
-            this.maxPriceDataGridViewTextBoxColumn,
-            this.minQtyDataGridViewTextBoxColumn,
-            this.qtyFilledDataGridViewTextBoxColumn,
-            this.conditionDataGridViewTextBoxColumn,
-            this.remarksDataGridViewTextBoxColumn,
-            this.notifyDataGridViewTextBoxColumn,
-            this.wantedShowDataGridViewTextBoxColumn,
-            this.wantedListIdDataGridViewTextBoxColumn});
+            this.ItemType,
+            this.Image,
+            this.ItemId,
+            this.Color,
+            this.MaxPrice,
+            this.MinQty,
+            this.QtyFilled,
+            this.Condition,
+            this.Remarks,
+            this.Notify,
+            this.WantedShow,
+            this.WantedListId});
             this.tableLayoutPanelMain.SetColumnSpan(this.dataGridViewItems, 5);
             this.dataGridViewItems.DataSource = this.inventoryItemListBindingSource;
             this.dataGridViewItems.Location = new System.Drawing.Point(3, 53);
@@ -138,88 +142,6 @@
             this.dataGridViewItems.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataGridViewItems_RowPostPaint);
             this.dataGridViewItems.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridViewItems_RowsAdded);
             this.dataGridViewItems.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridViewItems_KeyDown);
-            // 
-            // itemTypeDataGridViewTextBoxColumn
-            // 
-            this.itemTypeDataGridViewTextBoxColumn.DataPropertyName = "ItemType";
-            this.itemTypeDataGridViewTextBoxColumn.HeaderText = "ItemType";
-            this.itemTypeDataGridViewTextBoxColumn.Name = "itemTypeDataGridViewTextBoxColumn";
-            this.itemTypeDataGridViewTextBoxColumn.ReadOnly = true;
-            this.itemTypeDataGridViewTextBoxColumn.ToolTipText = "[Read Only Column] Click to sort";
-            // 
-            // itemIdDataGridViewTextBoxColumn
-            // 
-            this.itemIdDataGridViewTextBoxColumn.DataPropertyName = "ItemId";
-            this.itemIdDataGridViewTextBoxColumn.HeaderText = "ItemId";
-            this.itemIdDataGridViewTextBoxColumn.Name = "itemIdDataGridViewTextBoxColumn";
-            this.itemIdDataGridViewTextBoxColumn.ReadOnly = true;
-            this.itemIdDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.itemIdDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.itemIdDataGridViewTextBoxColumn.ToolTipText = "[Read Only Column] Click to sort";
-            // 
-            // colorDataGridViewTextBoxColumn
-            // 
-            this.colorDataGridViewTextBoxColumn.DataPropertyName = "Color";
-            this.colorDataGridViewTextBoxColumn.HeaderText = "Color";
-            this.colorDataGridViewTextBoxColumn.Name = "colorDataGridViewTextBoxColumn";
-            this.colorDataGridViewTextBoxColumn.ReadOnly = true;
-            this.colorDataGridViewTextBoxColumn.ToolTipText = "[Read Only Column] Click to sort";
-            // 
-            // maxPriceDataGridViewTextBoxColumn
-            // 
-            this.maxPriceDataGridViewTextBoxColumn.DataPropertyName = "MaxPrice";
-            this.maxPriceDataGridViewTextBoxColumn.HeaderText = "MaxPrice";
-            this.maxPriceDataGridViewTextBoxColumn.Name = "maxPriceDataGridViewTextBoxColumn";
-            this.maxPriceDataGridViewTextBoxColumn.ToolTipText = "Click to sort";
-            // 
-            // minQtyDataGridViewTextBoxColumn
-            // 
-            this.minQtyDataGridViewTextBoxColumn.DataPropertyName = "MinQty";
-            this.minQtyDataGridViewTextBoxColumn.HeaderText = "MinQty";
-            this.minQtyDataGridViewTextBoxColumn.Name = "minQtyDataGridViewTextBoxColumn";
-            this.minQtyDataGridViewTextBoxColumn.ToolTipText = "Click to sort";
-            // 
-            // qtyFilledDataGridViewTextBoxColumn
-            // 
-            this.qtyFilledDataGridViewTextBoxColumn.DataPropertyName = "QtyFilled";
-            this.qtyFilledDataGridViewTextBoxColumn.HeaderText = "QtyFilled";
-            this.qtyFilledDataGridViewTextBoxColumn.Name = "qtyFilledDataGridViewTextBoxColumn";
-            this.qtyFilledDataGridViewTextBoxColumn.ToolTipText = "Click to sort";
-            // 
-            // conditionDataGridViewTextBoxColumn
-            // 
-            this.conditionDataGridViewTextBoxColumn.DataPropertyName = "Condition";
-            this.conditionDataGridViewTextBoxColumn.HeaderText = "Condition";
-            this.conditionDataGridViewTextBoxColumn.Name = "conditionDataGridViewTextBoxColumn";
-            this.conditionDataGridViewTextBoxColumn.ToolTipText = "Click to sort";
-            // 
-            // remarksDataGridViewTextBoxColumn
-            // 
-            this.remarksDataGridViewTextBoxColumn.DataPropertyName = "Remarks";
-            this.remarksDataGridViewTextBoxColumn.HeaderText = "Remarks";
-            this.remarksDataGridViewTextBoxColumn.Name = "remarksDataGridViewTextBoxColumn";
-            this.remarksDataGridViewTextBoxColumn.ToolTipText = "Click to sort";
-            // 
-            // notifyDataGridViewTextBoxColumn
-            // 
-            this.notifyDataGridViewTextBoxColumn.DataPropertyName = "Notify";
-            this.notifyDataGridViewTextBoxColumn.HeaderText = "Notify";
-            this.notifyDataGridViewTextBoxColumn.Name = "notifyDataGridViewTextBoxColumn";
-            this.notifyDataGridViewTextBoxColumn.ToolTipText = "Click to sort";
-            // 
-            // wantedShowDataGridViewTextBoxColumn
-            // 
-            this.wantedShowDataGridViewTextBoxColumn.DataPropertyName = "WantedShow";
-            this.wantedShowDataGridViewTextBoxColumn.HeaderText = "WantedShow";
-            this.wantedShowDataGridViewTextBoxColumn.Name = "wantedShowDataGridViewTextBoxColumn";
-            this.wantedShowDataGridViewTextBoxColumn.ToolTipText = "Click to sort";
-            // 
-            // wantedListIdDataGridViewTextBoxColumn
-            // 
-            this.wantedListIdDataGridViewTextBoxColumn.DataPropertyName = "WantedListId";
-            this.wantedListIdDataGridViewTextBoxColumn.HeaderText = "WantedListId";
-            this.wantedListIdDataGridViewTextBoxColumn.Name = "wantedListIdDataGridViewTextBoxColumn";
-            this.wantedListIdDataGridViewTextBoxColumn.ToolTipText = "Click to sort";
             // 
             // inventoryItemListBindingSource
             // 
@@ -239,7 +161,7 @@
             // buttonAbout
             // 
             this.buttonAbout.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.buttonAbout.Location = new System.Drawing.Point(610, 6);
+            this.buttonAbout.Location = new System.Drawing.Point(457, 485);
             this.buttonAbout.Name = "buttonAbout";
             this.buttonAbout.Size = new System.Drawing.Size(142, 37);
             this.buttonAbout.TabIndex = 7;
@@ -248,22 +170,10 @@
             this.buttonAbout.UseVisualStyleBackColor = true;
             this.buttonAbout.Click += new System.EventHandler(this.buttonAbout_Click);
             // 
-            // buttonClear
-            // 
-            this.buttonClear.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.buttonClear.Location = new System.Drawing.Point(155, 485);
-            this.buttonClear.Name = "buttonClear";
-            this.buttonClear.Size = new System.Drawing.Size(142, 37);
-            this.buttonClear.TabIndex = 3;
-            this.buttonClear.Text = "&Clear";
-            this.toolTipMain.SetToolTip(this.buttonClear, "Clear all items from list");
-            this.buttonClear.UseVisualStyleBackColor = true;
-            this.buttonClear.Click += new System.EventHandler(this.buttonClear_Click);
-            // 
             // buttonExport
             // 
             this.buttonExport.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.buttonExport.Location = new System.Drawing.Point(457, 485);
+            this.buttonExport.Location = new System.Drawing.Point(155, 6);
             this.buttonExport.Name = "buttonExport";
             this.buttonExport.Size = new System.Drawing.Size(142, 37);
             this.buttonExport.TabIndex = 4;
@@ -276,7 +186,7 @@
             // 
             this.checkBoxHideEmptyColumns.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.checkBoxHideEmptyColumns.Appearance = System.Windows.Forms.Appearance.Button;
-            this.checkBoxHideEmptyColumns.Location = new System.Drawing.Point(306, 485);
+            this.checkBoxHideEmptyColumns.Location = new System.Drawing.Point(457, 6);
             this.checkBoxHideEmptyColumns.Name = "checkBoxHideEmptyColumns";
             this.checkBoxHideEmptyColumns.Size = new System.Drawing.Size(142, 37);
             this.checkBoxHideEmptyColumns.TabIndex = 6;
@@ -285,6 +195,31 @@
             this.toolTipMain.SetToolTip(this.checkBoxHideEmptyColumns, "Hide empty columns (or show if they are already hidden)");
             this.checkBoxHideEmptyColumns.UseVisualStyleBackColor = true;
             this.checkBoxHideEmptyColumns.CheckedChanged += new System.EventHandler(this.checkBoxHideEmptyColumns_CheckedChanged);
+            // 
+            // buttonClear
+            // 
+            this.buttonClear.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.buttonClear.Location = new System.Drawing.Point(306, 6);
+            this.buttonClear.Name = "buttonClear";
+            this.buttonClear.Size = new System.Drawing.Size(142, 37);
+            this.buttonClear.TabIndex = 3;
+            this.buttonClear.Text = "&Clear";
+            this.toolTipMain.SetToolTip(this.buttonClear, "Clear all items from list");
+            this.buttonClear.UseVisualStyleBackColor = true;
+            this.buttonClear.Click += new System.EventHandler(this.buttonClear_Click);
+            // 
+            // buttonDownloadImages
+            // 
+            this.buttonDownloadImages.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.buttonDownloadImages.Enabled = false;
+            this.buttonDownloadImages.Location = new System.Drawing.Point(610, 6);
+            this.buttonDownloadImages.Name = "buttonDownloadImages";
+            this.buttonDownloadImages.Size = new System.Drawing.Size(142, 37);
+            this.buttonDownloadImages.TabIndex = 8;
+            this.buttonDownloadImages.Text = "&Download Images";
+            this.toolTipMain.SetToolTip(this.buttonDownloadImages, "Download images for items");
+            this.buttonDownloadImages.UseVisualStyleBackColor = true;
+            this.buttonDownloadImages.Click += new System.EventHandler(this.buttonDownloadImages_Click);
             // 
             // openFileDialogXml
             // 
@@ -321,6 +256,94 @@
             this.toolStripMenuItemTransform.Size = new System.Drawing.Size(198, 24);
             this.toolStripMenuItemTransform.Text = "Transform values...";
             this.toolStripMenuItemTransform.Click += new System.EventHandler(this.toolStripMenuItemTransform_Click);
+            // 
+            // ItemType
+            // 
+            this.ItemType.DataPropertyName = "ItemType";
+            this.ItemType.HeaderText = "ItemType";
+            this.ItemType.Name = "ItemType";
+            this.ItemType.ReadOnly = true;
+            this.ItemType.ToolTipText = "[Read Only Column] Click to sort";
+            // 
+            // Image
+            // 
+            this.Image.HeaderText = "Image";
+            this.Image.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
+            this.Image.Name = "Image";
+            this.Image.ReadOnly = true;
+            // 
+            // ItemId
+            // 
+            this.ItemId.DataPropertyName = "ItemId";
+            this.ItemId.HeaderText = "ItemId";
+            this.ItemId.Name = "ItemId";
+            this.ItemId.ReadOnly = true;
+            this.ItemId.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ItemId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // Color
+            // 
+            this.Color.DataPropertyName = "Color";
+            this.Color.HeaderText = "Color";
+            this.Color.Name = "Color";
+            this.Color.ReadOnly = true;
+            this.Color.ToolTipText = "[Read Only Column] Click to sort";
+            // 
+            // MaxPrice
+            // 
+            this.MaxPrice.DataPropertyName = "MaxPrice";
+            this.MaxPrice.HeaderText = "MaxPrice";
+            this.MaxPrice.Name = "MaxPrice";
+            this.MaxPrice.ToolTipText = "Click to sort";
+            // 
+            // MinQty
+            // 
+            this.MinQty.DataPropertyName = "MinQty";
+            this.MinQty.HeaderText = "MinQty";
+            this.MinQty.Name = "MinQty";
+            this.MinQty.ToolTipText = "Click to sort";
+            // 
+            // QtyFilled
+            // 
+            this.QtyFilled.DataPropertyName = "QtyFilled";
+            this.QtyFilled.HeaderText = "QtyFilled";
+            this.QtyFilled.Name = "QtyFilled";
+            this.QtyFilled.ToolTipText = "Click to sort";
+            // 
+            // Condition
+            // 
+            this.Condition.DataPropertyName = "Condition";
+            this.Condition.HeaderText = "Condition";
+            this.Condition.Name = "Condition";
+            this.Condition.ToolTipText = "Click to sort";
+            // 
+            // Remarks
+            // 
+            this.Remarks.DataPropertyName = "Remarks";
+            this.Remarks.HeaderText = "Remarks";
+            this.Remarks.Name = "Remarks";
+            this.Remarks.ToolTipText = "Click to sort";
+            // 
+            // Notify
+            // 
+            this.Notify.DataPropertyName = "Notify";
+            this.Notify.HeaderText = "Notify";
+            this.Notify.Name = "Notify";
+            this.Notify.ToolTipText = "Click to sort";
+            // 
+            // WantedShow
+            // 
+            this.WantedShow.DataPropertyName = "WantedShow";
+            this.WantedShow.HeaderText = "WantedShow";
+            this.WantedShow.Name = "WantedShow";
+            this.WantedShow.ToolTipText = "Click to sort";
+            // 
+            // WantedListId
+            // 
+            this.WantedListId.DataPropertyName = "WantedListId";
+            this.WantedListId.HeaderText = "WantedListId";
+            this.WantedListId.Name = "WantedListId";
+            this.WantedListId.ToolTipText = "Click to sort";
             // 
             // FormMain
             // 
@@ -359,18 +382,20 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemClear;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemSet;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemTransform;
-        private System.Windows.Forms.DataGridViewTextBoxColumn itemTypeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewLinkColumn itemIdDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colorDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn maxPriceDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn minQtyDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn qtyFilledDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn conditionDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn remarksDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn notifyDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn wantedShowDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn wantedListIdDataGridViewTextBoxColumn;
         private System.Windows.Forms.Button buttonAbout;
+        private System.Windows.Forms.Button buttonDownloadImages;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ItemType;
+        private System.Windows.Forms.DataGridViewImageColumn Image;
+        private System.Windows.Forms.DataGridViewLinkColumn ItemId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Color;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MaxPrice;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MinQty;
+        private System.Windows.Forms.DataGridViewTextBoxColumn QtyFilled;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Condition;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Remarks;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Notify;
+        private System.Windows.Forms.DataGridViewTextBoxColumn WantedShow;
+        private System.Windows.Forms.DataGridViewTextBoxColumn WantedListId;
     }
 }
 

@@ -1,4 +1,10 @@
-﻿2018-07-09
+﻿2018-09-25
+1.3.0
+- New button to download item images
+- Progress indicator when downloading images
+- Images cached
+
+2018-07-09
 1.2.2
 - Validation improvements
 - UI tweaks

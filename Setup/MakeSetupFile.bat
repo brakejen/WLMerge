@@ -5,10 +5,28 @@ rem Constants
 
 rem Paths to executables used
 set MSBUILD="c:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"
-set GETASSEMBLYINFO=GetAssemblyInfo
+set GETASSEMBLYINFO=.\GetAssemblyInfo.exe
 set INNOCOMPILE="c:\Program Files (x86)\Inno Setup 5\compil32.exe"
 set ZIP="C:\Program Files\7-Zip\7z.exe"
 
+
+rem Check paths
+if not exist %MSBUILD% (
+	echo !!! Broken path: %MSBUILD%
+	goto exitwitherror
+)
+if not exist %GETASSEMBLYINFO% (
+	echo !!! Broken path: %GETASSEMBLYINFO%
+	goto exitwitherror
+)
+if not exist %INNOCOMPILE% (
+	echo !!! Broken path: %INNOCOMPILE%
+	goto exitwitherror
+)
+if not exist %ZIP% (
+	echo !!! Broken path: %ZIP%
+	goto exitwitherror
+)
 
 rem Files used
 set ASSEMBLYINFO=AssemblyInfo.txt
@@ -51,7 +69,13 @@ rem Step 4: Done
 
 rem clean setup exe
 del /Q %SETUPTARGET%.exe
-
 echo *** DONE...
 echo Output: %SETUPZIP%
+goto end
+
+:exitwitherror
+
+echo !!! SCRIPT ABORTED... 
+
+:end
 

@@ -71,6 +71,12 @@
     <Compile Include="UI\FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\FormProgress.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FormProgress.Designer.cs">
+      <DependentUpon>FormProgress.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\FormTransformValue.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -95,6 +101,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FormProgress.resx">
+      <DependentUpon>FormProgress.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FormTransformValue.resx">
       <DependentUpon>FormTransformValue.cs</DependentUpon>

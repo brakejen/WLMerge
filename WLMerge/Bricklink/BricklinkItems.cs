@@ -32,5 +32,11 @@ namespace WLMerge
                 default: return "<Invalid Item Type>";
             }
         }
+
+        public static string BricklinkItemImageUrl(string itemId, int colorId)
+        {
+            return $"https://img.bricklink.com/ItemImage/PN/{colorId}/{itemId}.png";
+        }
+
     }
 }

@@ -24,6 +24,7 @@ namespace WLMerge
             using (StringWriter textWriter = new StringWriter())
             {
                 new XmlSerializer(typeof(Inventory)).Serialize(textWriter, this);
+
                 return textWriter.ToString();
             }
         }
@@ -78,19 +79,18 @@ namespace WLMerge
         /// </summary>
         public enum ItemProperty
         {
-            ITEMTYPE = 0,
-            ITEMID = 1,
-            COLOR = 2,
-            MAXPRICE = 3,
-            MINQTY = 4,
-            QTYFILLED = 5,
-            CONDITION = 6,
-            REMARKS = 7,
-            NOTIFY = 8,
-            WANTEDSHOW = 9,
-            WANTEDLISTID = 10,
+            ITEMTYPE,
+            ITEMID,
+            COLOR,
+            MAXPRICE,
+            MINQTY,
+            QTYFILLED,
+            CONDITION,
+            REMARKS,
+            NOTIFY,
+            WANTEDSHOW,
+            WANTEDLISTID,
         }
-
 
         private string _itemType;
 
@@ -312,14 +312,19 @@ namespace WLMerge
 
             var itemsCombined = new InventoryItem
             {
+                // Same by definition
                 ItemType = i2.ItemType,
                 ItemId = i2.ItemId,
                 Color = i2.Color,
+
+                // Calculated
                 MaxPrice = Math.Max(i1.MaxPrice, i2.MaxPrice),
                 MinQty = i1.MinQty + i2.MinQty,
                 QtyFilled = i1.QtyFilled + i2.QtyFilled,
-                Condition = i2.Condition,
                 Remarks = $"{i1.Remarks} || {i2.Remarks}",
+
+                // i1 overwritten by i2. They could be different but it makes no sense to try to combine them
+                Condition = i2.Condition,
                 Notify = i2.Notify,
                 WantedShow = i2.WantedShow,
                 WantedListId = i2.WantedListId,

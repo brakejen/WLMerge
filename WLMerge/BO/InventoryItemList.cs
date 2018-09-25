@@ -10,11 +10,10 @@ namespace WLMerge
     /// The list has the following notable properties:
     ///     * Can be databound (inerits BindingList)
     ///     * Can be sorted in a gridview (extension with SortableBindningList)
-    ///     * Knows how many items (elements in list) AND pieces in total it represent, with
-    ///         exception: only if added using Insert(InventoryItem[] items). All other operators
-    ///         will not update pieces in total 
     ///     * Insert(InventoryItem[] items) will insert new items and merge existing ones, ie
     ///       it provides the main functionality of the app, as in WL*merge*
+    ///     * Emits events for adding and removing items, but not updated ones (could not get it to 
+    ///       work with value before and after change which was needed - only after)
     /// </summary>
     public class InventoryItemList : SortableBindingList<InventoryItem>
     {        
@@ -82,31 +81,36 @@ namespace WLMerge
             // For each new item to insert...
             foreach (var newItem in newItems)
             {
-                var combined = false;
+                Insert(newItem);
+            }
+        }
 
-                // Go through all existing items
-                for(int i = 0; i<Count; i++)
+        public void Insert(InventoryItem newItem)
+        {
+            var combined = false;
+
+            // Go through all existing items
+            for (int i = 0; i < Count; i++)
+            {
+                var oldItem = this[i];
+
+                // Equality based on ITEMID and COLOR combined
+                if (oldItem.ItemId == newItem.ItemId && oldItem.Color == newItem.Color)
                 {
-                    var oldItem = this[i];
+                    // New item already in list! Combine old and new one to make the updated item
+                    var itemsCombined = oldItem + newItem;
+                    SetItem(i, itemsCombined);
 
-                    // Equality based on ITEMID and COLOR combined
-                    if (oldItem.ItemId == newItem.ItemId && oldItem.Color == newItem.Color)
-                    {
-                        // New item already in list! Combine old and new one to make the updated item
-                        var itemsCombined = oldItem + newItem;
-                        SetItem(i, itemsCombined);
-
-                        // We're done searching
-                        combined = true;
-                        break;
-                    }
+                    // We're done searching
+                    combined = true;
+                    break;
                 }
+            }
 
-                if (!combined)
-                {
-                    // Item not found, new one so add it 
-                    Add(newItem);
-                }
+            if (!combined)
+            {
+                // Item not found, new one so add it 
+                Add(newItem);
             }
         }
     }
