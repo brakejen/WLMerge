@@ -194,7 +194,7 @@ namespace WLMerge
                     using (WebClient wc = new WebClient())
                     {
                         // Get image as stream of bytes
-                        var url = $"https://img.bricklink.com/ItemImage/PN/{color}/{itemId}.png";
+                        var url = BricklinkItems.BricklinkItemImageUrl(itemId, color);
                         byte[] data = wc.DownloadData(url);
 
                         // Store to bitmap
@@ -523,7 +523,7 @@ namespace WLMerge
                     var itemId = (string)dataGridViewItems[columnIndexItemId, rowIndex].Value;
                     Image image = GetItemImageFromBricklink(itemId, color);
 
-                   dataGridViewItems[columnIndexImage, rowIndex].Value = image;
+                    dataGridViewItems[columnIndexImage, rowIndex].Value = image;
                 }
 
                 // Update progress dialog with current progress
