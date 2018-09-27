@@ -1,8 +1,7 @@
-﻿2018-09-25
+﻿2018-09-27
 1.3.0
-- New button to download item images
-- Progress indicator when downloading images
-- Images cached
+- New button to download item images, with progress indicator
+- Images cached, images can be zoomed
 
 2018-07-09
 1.2.2

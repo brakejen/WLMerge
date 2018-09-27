@@ -65,6 +65,12 @@
     <Compile Include="UI\FormAbout.Designer.cs">
       <DependentUpon>FormAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\FormImage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FormImage.Designer.cs">
+      <DependentUpon>FormImage.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,6 +104,9 @@
     <Compile Include="Bricklink\WantedList.cs" />
     <EmbeddedResource Include="UI\FormAbout.resx">
       <DependentUpon>FormAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FormImage.resx">
+      <DependentUpon>FormImage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>

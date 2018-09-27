@@ -33,6 +33,18 @@
             this.buttonBrowsForFile = new System.Windows.Forms.Button();
             this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.dataGridViewItems = new System.Windows.Forms.DataGridView();
+            this.ItemType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Image = new System.Windows.Forms.DataGridViewImageColumn();
+            this.ItemId = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.Color = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MaxPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MinQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.QtyFilled = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Condition = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Remarks = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Notify = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WantedShow = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WantedListId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.inventoryItemListBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.buttonExit = new System.Windows.Forms.Button();
             this.buttonAbout = new System.Windows.Forms.Button();
@@ -46,18 +58,6 @@
             this.toolStripMenuItemClear = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemSet = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemTransform = new System.Windows.Forms.ToolStripMenuItem();
-            this.ItemType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Image = new System.Windows.Forms.DataGridViewImageColumn();
-            this.ItemId = new System.Windows.Forms.DataGridViewLinkColumn();
-            this.Color = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MaxPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MinQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.QtyFilled = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Condition = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Remarks = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Notify = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.WantedShow = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.WantedListId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewItems)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.inventoryItemListBindingSource)).BeginInit();
@@ -142,6 +142,95 @@
             this.dataGridViewItems.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataGridViewItems_RowPostPaint);
             this.dataGridViewItems.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridViewItems_RowsAdded);
             this.dataGridViewItems.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridViewItems_KeyDown);
+            // 
+            // ItemType
+            // 
+            this.ItemType.DataPropertyName = "ItemType";
+            this.ItemType.HeaderText = "ItemType";
+            this.ItemType.Name = "ItemType";
+            this.ItemType.ReadOnly = true;
+            this.ItemType.ToolTipText = "[Read Only Column] Click to sort";
+            // 
+            // Image
+            // 
+            this.Image.DataPropertyName = "Image";
+            this.Image.HeaderText = "Image";
+            this.Image.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
+            this.Image.Name = "Image";
+            this.Image.ReadOnly = true;
+            // 
+            // ItemId
+            // 
+            this.ItemId.DataPropertyName = "ItemId";
+            this.ItemId.HeaderText = "ItemId";
+            this.ItemId.Name = "ItemId";
+            this.ItemId.ReadOnly = true;
+            this.ItemId.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ItemId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // Color
+            // 
+            this.Color.DataPropertyName = "Color";
+            this.Color.HeaderText = "Color";
+            this.Color.Name = "Color";
+            this.Color.ReadOnly = true;
+            this.Color.ToolTipText = "[Read Only Column] Click to sort";
+            // 
+            // MaxPrice
+            // 
+            this.MaxPrice.DataPropertyName = "MaxPrice";
+            this.MaxPrice.HeaderText = "MaxPrice";
+            this.MaxPrice.Name = "MaxPrice";
+            this.MaxPrice.ToolTipText = "Click to sort";
+            // 
+            // MinQty
+            // 
+            this.MinQty.DataPropertyName = "MinQty";
+            this.MinQty.HeaderText = "MinQty";
+            this.MinQty.Name = "MinQty";
+            this.MinQty.ToolTipText = "Click to sort";
+            // 
+            // QtyFilled
+            // 
+            this.QtyFilled.DataPropertyName = "QtyFilled";
+            this.QtyFilled.HeaderText = "QtyFilled";
+            this.QtyFilled.Name = "QtyFilled";
+            this.QtyFilled.ToolTipText = "Click to sort";
+            // 
+            // Condition
+            // 
+            this.Condition.DataPropertyName = "Condition";
+            this.Condition.HeaderText = "Condition";
+            this.Condition.Name = "Condition";
+            this.Condition.ToolTipText = "Click to sort";
+            // 
+            // Remarks
+            // 
+            this.Remarks.DataPropertyName = "Remarks";
+            this.Remarks.HeaderText = "Remarks";
+            this.Remarks.Name = "Remarks";
+            this.Remarks.ToolTipText = "Click to sort";
+            // 
+            // Notify
+            // 
+            this.Notify.DataPropertyName = "Notify";
+            this.Notify.HeaderText = "Notify";
+            this.Notify.Name = "Notify";
+            this.Notify.ToolTipText = "Click to sort";
+            // 
+            // WantedShow
+            // 
+            this.WantedShow.DataPropertyName = "WantedShow";
+            this.WantedShow.HeaderText = "WantedShow";
+            this.WantedShow.Name = "WantedShow";
+            this.WantedShow.ToolTipText = "Click to sort";
+            // 
+            // WantedListId
+            // 
+            this.WantedListId.DataPropertyName = "WantedListId";
+            this.WantedListId.HeaderText = "WantedListId";
+            this.WantedListId.Name = "WantedListId";
+            this.WantedListId.ToolTipText = "Click to sort";
             // 
             // inventoryItemListBindingSource
             // 
@@ -256,94 +345,6 @@
             this.toolStripMenuItemTransform.Size = new System.Drawing.Size(198, 24);
             this.toolStripMenuItemTransform.Text = "Transform values...";
             this.toolStripMenuItemTransform.Click += new System.EventHandler(this.toolStripMenuItemTransform_Click);
-            // 
-            // ItemType
-            // 
-            this.ItemType.DataPropertyName = "ItemType";
-            this.ItemType.HeaderText = "ItemType";
-            this.ItemType.Name = "ItemType";
-            this.ItemType.ReadOnly = true;
-            this.ItemType.ToolTipText = "[Read Only Column] Click to sort";
-            // 
-            // Image
-            // 
-            this.Image.HeaderText = "Image";
-            this.Image.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
-            this.Image.Name = "Image";
-            this.Image.ReadOnly = true;
-            // 
-            // ItemId
-            // 
-            this.ItemId.DataPropertyName = "ItemId";
-            this.ItemId.HeaderText = "ItemId";
-            this.ItemId.Name = "ItemId";
-            this.ItemId.ReadOnly = true;
-            this.ItemId.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ItemId.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // Color
-            // 
-            this.Color.DataPropertyName = "Color";
-            this.Color.HeaderText = "Color";
-            this.Color.Name = "Color";
-            this.Color.ReadOnly = true;
-            this.Color.ToolTipText = "[Read Only Column] Click to sort";
-            // 
-            // MaxPrice
-            // 
-            this.MaxPrice.DataPropertyName = "MaxPrice";
-            this.MaxPrice.HeaderText = "MaxPrice";
-            this.MaxPrice.Name = "MaxPrice";
-            this.MaxPrice.ToolTipText = "Click to sort";
-            // 
-            // MinQty
-            // 
-            this.MinQty.DataPropertyName = "MinQty";
-            this.MinQty.HeaderText = "MinQty";
-            this.MinQty.Name = "MinQty";
-            this.MinQty.ToolTipText = "Click to sort";
-            // 
-            // QtyFilled
-            // 
-            this.QtyFilled.DataPropertyName = "QtyFilled";
-            this.QtyFilled.HeaderText = "QtyFilled";
-            this.QtyFilled.Name = "QtyFilled";
-            this.QtyFilled.ToolTipText = "Click to sort";
-            // 
-            // Condition
-            // 
-            this.Condition.DataPropertyName = "Condition";
-            this.Condition.HeaderText = "Condition";
-            this.Condition.Name = "Condition";
-            this.Condition.ToolTipText = "Click to sort";
-            // 
-            // Remarks
-            // 
-            this.Remarks.DataPropertyName = "Remarks";
-            this.Remarks.HeaderText = "Remarks";
-            this.Remarks.Name = "Remarks";
-            this.Remarks.ToolTipText = "Click to sort";
-            // 
-            // Notify
-            // 
-            this.Notify.DataPropertyName = "Notify";
-            this.Notify.HeaderText = "Notify";
-            this.Notify.Name = "Notify";
-            this.Notify.ToolTipText = "Click to sort";
-            // 
-            // WantedShow
-            // 
-            this.WantedShow.DataPropertyName = "WantedShow";
-            this.WantedShow.HeaderText = "WantedShow";
-            this.WantedShow.Name = "WantedShow";
-            this.WantedShow.ToolTipText = "Click to sort";
-            // 
-            // WantedListId
-            // 
-            this.WantedListId.DataPropertyName = "WantedListId";
-            this.WantedListId.HeaderText = "WantedListId";
-            this.WantedListId.Name = "WantedListId";
-            this.WantedListId.ToolTipText = "Click to sort";
             // 
             // FormMain
             // 

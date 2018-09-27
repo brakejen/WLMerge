@@ -16,6 +16,7 @@ namespace WLMerge
         private InventoryItemList _itemList;
         private int _fileCount;
         private int _pieceCount;
+        private FormImage _formImage;
 
         #endregion
 
@@ -33,7 +34,6 @@ namespace WLMerge
             _itemList.ItemAdded += _itemList_ItemAdded;
             _itemList.ItemRemoved += _itemList_ItemRemoved;
             inventoryItemListBindingSource.DataSource = _itemList;
-
             // Perform a UI reset
             ResetForm();
         }
@@ -164,10 +164,9 @@ namespace WLMerge
             }
         }
 
-        // Download an image of an item from Bricklink. If useLocalCache is true (default) it will store any downloaded image
-        // in local settings directory (cache dir) for faster retrieval next time - ie if image exist locally use it instead of
-        // downloading it.
-        private Image GetItemImageFromBricklink(string itemId, int color, bool useLocalCache = true)
+        // Download an image of an item from Bricklink. If useLocalCacheOnly is true it will only use any locally stored
+        // images (no network access). Any network access will store retreieved images locally for later use.
+        private Image GetItemImageFromBricklink(string itemId, int color, bool useLocalCacheOnly)
         {
             Image image = null;
 
@@ -176,16 +175,16 @@ namespace WLMerge
                 // Path to local cache is stored in the App data folder, under cache. One dir for each color, one file for each image
                 var imageCachePath = $@"{Program.AppDataFolder}\cache\{color}\{itemId}.png";
 
-                // Do we use cache and does cached image exist?
-                if (useLocalCache && File.Exists(imageCachePath))
+                // Do we use cache only?
+                if (useLocalCacheOnly)
                 {
                     // Yes, use it
-                    image = Bitmap.FromFile(imageCachePath);
+                    image = File.Exists(imageCachePath) ? Bitmap.FromFile(imageCachePath) : null;
                 }
                 else
                 {
                     // No. Make sure cache dir exist first. Will create both root cache dir and color dir as needed
-                    if (useLocalCache && !Directory.Exists(Path.GetDirectoryName(imageCachePath)))
+                    if (!Directory.Exists(Path.GetDirectoryName(imageCachePath)))
                     {
                         Directory.CreateDirectory(Path.GetDirectoryName(imageCachePath));
                     }
@@ -203,10 +202,8 @@ namespace WLMerge
                             image = new Bitmap(ms);
 
                             // Save to local cache for future use, if enabled
-                            if (useLocalCache)
-                            {
-                                image.Save(imageCachePath);
-                            }
+                            image.Save(imageCachePath);
+                            
                         }
                     }
                 }
@@ -290,6 +287,20 @@ namespace WLMerge
             dataGridViewItems.AutoResizeColumn(ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.REMARKS), DataGridViewAutoSizeColumnMode.AllCells);
 
             UpdateTitle();
+
+            var columnIndexImage = dataGridViewItems.Columns["Image"].Index;
+
+            for (int rowIndex= e.RowIndex; rowIndex < e.RowIndex + e.RowCount; rowIndex++)
+            {
+                if (dataGridViewItems[columnIndexImage, rowIndex].Value == null)
+                {
+                    var itemId = (string)dataGridViewItems[ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.ITEMID), e.RowIndex].Value;
+                    var color = (int)dataGridViewItems[ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.COLOR), e.RowIndex].Value;
+                    var image = GetItemImageFromBricklink(itemId, color, true);
+
+                    dataGridViewItems[columnIndexImage, rowIndex].Value = image;
+                }
+            }
         }
 
         // Event: button to exit application have been clicked
@@ -320,13 +331,13 @@ namespace WLMerge
         private void dataGridViewItems_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             // Item type will show a description as tooltip
-            if(e.ColumnIndex == ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.ITEMTYPE))
+            if (e.ColumnIndex == ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.ITEMTYPE))
             {
                 var itemTypeDescription = BricklinkItems.BricklinkItemTypeDescription((string)e.Value);
                 dataGridViewItems[e.ColumnIndex, e.RowIndex].ToolTipText = itemTypeDescription;
             }
             // Paint color column cells and show tooltip with color description
-            else if(e.ColumnIndex == ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.COLOR))
+            else if (e.ColumnIndex == ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.COLOR))
             {
                 // Colorize cell
                 var color = (int)e.Value;
@@ -336,9 +347,9 @@ namespace WLMerge
 
                 // Also add a color description as tool tip for the cell
                 dataGridViewItems[e.ColumnIndex, e.RowIndex].ToolTipText = cInfo.Name;
-            } 
+            }
             // Add a tool tip to item id's with URL that this cell will launch upon click
-            else if(e.ColumnIndex == ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.ITEMID))
+            else if (e.ColumnIndex == ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.ITEMID))
             {
                 var itemId = (string)e.Value;
                 var color = (int)dataGridViewItems[ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.COLOR), e.RowIndex].Value;
@@ -346,6 +357,12 @@ namespace WLMerge
                 dataGridViewItems[e.ColumnIndex, e.RowIndex].ToolTipText = url;
             }
             // All other cells, general instruction as tool tip
+            else if (e.ColumnIndex == dataGridViewItems.Columns["Image"].Index)
+            {
+                dataGridViewItems[e.ColumnIndex, e.RowIndex].ToolTipText = dataGridViewItems[e.ColumnIndex, e.RowIndex].Value == null
+                    ? "Click button to download missing images (if they exist)"
+                    : "Click image to zoom then click anywhere to close zoom";
+            }
             else
             {
                 var description = dataGridViewItems[e.ColumnIndex, e.RowIndex].ReadOnly 
@@ -371,6 +388,16 @@ namespace WLMerge
                 var color = dataGridViewItems[ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.COLOR), e.RowIndex].Value.ToString();
                 var url = string.Format(BricklinkCatalogItemLink, itemNo, color);
                 System.Diagnostics.Process.Start(url);
+            }
+            else if (dataGridViewItems[e.ColumnIndex, e.RowIndex].GetType() == typeof(DataGridViewImageCell))
+            {
+                _formImage?.Close();
+                
+                if (dataGridViewItems[e.ColumnIndex, e.RowIndex].Value != null)
+                {
+                    _formImage = new FormImage((Image)dataGridViewItems[e.ColumnIndex, e.RowIndex].Value);
+                    _formImage.Show();
+                }
             }
         }
 
@@ -478,7 +505,12 @@ namespace WLMerge
         // has changed...
         private void dataGridViewItems_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (_itemList != null && e.ColumnIndex == ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.MINQTY))
+            if (_itemList == null)
+            {
+                return;
+            }
+
+            if (e.ColumnIndex == ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.MINQTY))
             {
                 _pieceCount = _itemList.Sum(i => i.MinQty);
                 UpdateTitle();
@@ -521,7 +553,7 @@ namespace WLMerge
                 {
                     var color = (int)dataGridViewItems[columnIndexColor, rowIndex].Value;
                     var itemId = (string)dataGridViewItems[columnIndexItemId, rowIndex].Value;
-                    Image image = GetItemImageFromBricklink(itemId, color);
+                    Image image = GetItemImageFromBricklink(itemId, color, false);
 
                     dataGridViewItems[columnIndexImage, rowIndex].Value = image;
                 }

@@ -114,6 +114,21 @@ namespace WLMerge
 
         private string _wantedListId;
 
+        private System.Drawing.Image _image;
+
+        [XmlIgnore]
+        public System.Drawing.Image Image
+        {
+            get
+            {
+                return _image;
+            }
+            set
+            {
+                _image = value;
+            }
+        }
+
         [XmlElement("ITEMTYPE")]
         public string ItemType
         {
@@ -328,6 +343,9 @@ namespace WLMerge
                 Notify = i2.Notify,
                 WantedShow = i2.WantedShow,
                 WantedListId = i2.WantedListId,
+
+                // Special for images
+                Image = i1.Image != null ? i1.Image : i2.Image,
             };
 
             return itemsCombined;
