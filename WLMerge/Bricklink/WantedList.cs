@@ -17,7 +17,13 @@ namespace WLMerge
     public class Inventory
     {
         /// <summary>
-        /// Write this Inventory to a string representing the XML-cod for it. 
+        /// The list of Inventory Items in this Inventory
+        /// </summary>
+        [XmlElement("ITEM")]
+        public InventoryItem[] Items { get; set; }
+
+        /// <summary>
+        /// Write this Inventory to a string representing the XML-code for it. 
         /// </summary>
         public string ToXml()
         {
@@ -36,30 +42,20 @@ namespace WLMerge
         /// <returns>New Inventory with items from XML file in it</returns>
         public static Inventory FromXmlFile(string path)
         {
-            string xmlDocumentText = File.ReadAllText(path);
-            XmlSerializer serializer = new XmlSerializer(typeof(Inventory));
+            var xmlDocumentText = File.ReadAllText(path);
+            var serializer = new XmlSerializer(typeof(Inventory));
+
             using (StringReader reader = new StringReader(xmlDocumentText))
             {
-                Inventory inventory = (Inventory)(serializer.Deserialize(reader));
-                return inventory;
-            }
-        }
-
-        private InventoryItem[] _items;
-
-        /// <summary>
-        /// The list of Inventory Items in this Inventory
-        /// </summary>
-        [XmlElement("ITEM")]
-        public InventoryItem[] Items
-        {
-            get
-            {
-                return _items;
-            }
-            set
-            {
-                _items = value;
+                try
+                {
+                    var inventory = (Inventory)(serializer.Deserialize(reader));
+                    return inventory;
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
             }
         }
     }
@@ -75,7 +71,6 @@ namespace WLMerge
     {
         /// <summary>
         /// Each element represent a unique property of an InventoryItem.
-        /// Maps each property to a unique int 0-10.
         /// </summary>
         public enum ItemProperty
         {
@@ -92,186 +87,41 @@ namespace WLMerge
             WANTEDLISTID,
         }
 
-        private string _itemType;
-
-        private string _itemId;
-
-        private int _color;
-
-        private decimal _maxPrice;
-
-        private int _minQty;
-
-        private int _qtyFilled;
-
-        private string _condition;
-
-        private string _remarks;
-
-        private string _notify;
-
-        private string _wantedShow;
-
-        private string _wantedListId;
-
-        private System.Drawing.Image _image;
-
         [XmlIgnore]
-        public System.Drawing.Image Image
-        {
-            get
-            {
-                return _image;
-            }
-            set
-            {
-                _image = value;
-            }
-        }
+        public System.Drawing.Image Image { get; set; }
 
         [XmlElement("ITEMTYPE")]
-        public string ItemType
-        {
-            get
-            {
-                return _itemType;
-            }
-            set
-            {
-                _itemType = value;
-            }
-        }
+        public string ItemType { get; set; }
 
         [XmlElement("ITEMID")]
-        public string ItemId
-        {
-            get
-            {
-                return _itemId;
-            }
-            set
-            {
-                _itemId = value;
-            }
-        }
+        public string ItemId { get; set; }
 
         [XmlElement("COLOR")]
-        public int Color
-        {
-            get
-            {
-                return _color;
-            }
-            set
-            {
-                _color = value;
-            }
-        }
+        public int Color { get; set; }
 
         [XmlElement("MAXPRICE")]
-        public decimal MaxPrice
-        {
-            get
-            {
-                return _maxPrice;
-            }
-            set
-            {
-                _maxPrice = value;
-            }
-        }
+        public decimal MaxPrice { get; set; }
 
         [XmlElement("MINQTY")]
-        public int MinQty
-        {
-            get
-            {
-                return _minQty;
-            }
-            set
-            {
-                _minQty = value;
-            }
-        }
-
+        public int MinQty { get; set; }
 
         [XmlElement("QTYFILLED")]
-        public int QtyFilled
-        {
-            get
-            {
-                return _qtyFilled;
-            }
-            set
-            {
-                _qtyFilled = value;
-            }
-        }
+        public int QtyFilled { get; set; }
 
         [XmlElement("COMDITION")]
-        public string Condition
-        {
-            get
-            {
-                return _condition;
-            }
-            set
-            {
-                _condition = value;
-            }
-        }
+        public string Condition { get; set; }
 
-        [XmlElement("REMARKS")]
-        public string Remarks
-        {
-            get
-            {
-                return _remarks;
-            }
-            set
-            {
-                _remarks = value;
-            }
-        }
+        [XmlElement("REMARKS")] 
+        public string Remarks { get; set; }
 
         [XmlElement("NOTIFY")]
-        public string Notify
-        {
-            get
-            {
-                return _notify;
-            }
-            set
-            {
-                _notify = value;
-            }
-        }
+        public string Notify { get; set; }
 
         [XmlElement("WANTEDSHOW")]
-        public string WantedShow
-        {
-            get
-            {
-                return _wantedShow;
-            }
-            set
-            {
-                _wantedShow = value;
-            }
-        }
+        public string WantedShow { get; set; }
 
         [XmlElement("WANTEDLISTID")]
-        public string WantedListId
-        {
-            get
-            {
-                return _wantedListId;
-            }
-            set
-            {
-                _wantedListId = value;
-            }
-        }
+        public string WantedListId { get; set; }
 
         public static Type ItemPropertyType(ItemProperty itemProperty)
         {
@@ -345,7 +195,7 @@ namespace WLMerge
                 WantedListId = i2.WantedListId,
 
                 // Special for images
-                Image = i1.Image != null ? i1.Image : i2.Image,
+                Image = i1.Image ?? i2.Image,
             };
 
             return itemsCombined;

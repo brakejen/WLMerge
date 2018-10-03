@@ -38,5 +38,10 @@ namespace WLMerge
             return $"https://img.bricklink.com/ItemImage/PN/{colorId}/{itemId}.png";
         }
 
+        public static string BricklinkItemImageUrlNoColor(string itemId)
+        {
+            return $"https://img.bricklink.com/ItemImage/PL/{itemId}.png";
+        }
+
     }
 }

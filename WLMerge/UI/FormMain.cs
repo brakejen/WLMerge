@@ -89,6 +89,13 @@ namespace WLMerge
                 // Load and parse the XML-file
                 var items = Inventory.FromXmlFile(path);
 
+                // Check for error while reading file
+                if (items == null)
+                {
+                    MessageBox.Show($"Failed to read XML file contents of file\n{path}.\nNot a valid Bricklink Wanted List XML.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 // Add the items of the Wanted List to our main list (ie merge)
                 foreach (var item in items.Items)
                 {
@@ -99,7 +106,6 @@ namespace WLMerge
 
         private int ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty property)
         {
-            //var color = (int)dataGridViewItems[(int)InventoryItem.ItemProperty.COLOR, e.RowIndex].Value;
             var columnName = property.ToString();
             var columnIndex = dataGridViewItems.Columns[columnName].Index;
 
@@ -163,10 +169,10 @@ namespace WLMerge
                 dataGridViewItems[columnIndex, rowIndex].Value = newValue;
             }
         }
-
+ 
         // Download an image of an item from Bricklink. If useLocalCacheOnly is true it will only use any locally stored
         // images (no network access). Any network access will store retreieved images locally for later use.
-        private Image GetItemImageFromBricklink(string itemId, int color, bool useLocalCacheOnly)
+        private Image GetItemImageFromBricklinkOrChache(string itemId, int color, bool useLocalCacheOnly, bool useFallackImage = false)
         {
             Image image = null;
 
@@ -192,11 +198,11 @@ namespace WLMerge
                     // Download image from Bricklink
                     using (WebClient wc = new WebClient())
                     {
-                        // Get image as stream of bytes
-                        var url = BricklinkItems.BricklinkItemImageUrl(itemId, color);
+                        // Get image as stream of bytes; if fallback we use an image withouth color mapping
+                        var url = useFallackImage ? BricklinkItems.BricklinkItemImageUrlNoColor(itemId) :  BricklinkItems.BricklinkItemImageUrl(itemId, color);
                         byte[] data = wc.DownloadData(url);
 
-                        // Store to bitmap
+                        // Store to bitmap locally
                         using (MemoryStream ms = new MemoryStream(data))
                         {
                             image = new Bitmap(ms);
@@ -208,12 +214,22 @@ namespace WLMerge
                     }
                 }
             }
-            catch // consume any error and consider this image retrieval a failure
+            catch // regardless of error
             {
-                // Was not able to download image (network error, non-existing image etc)
-                return null;
+                // Are we using fallback image?
+                if(!useFallackImage)
+                {
+                    // No, so retry to get image but with alternate image url (ie fallback is true). Whatever that may result in, use it
+                    return GetItemImageFromBricklinkOrChache(itemId, color, useLocalCacheOnly, true);
+                }
+                else
+                {
+                    // Yes - Fallback failed, we end up here only if fallback is used and exception is raised while doing so
+                    return null;
+                }
             }
 
+            // Image found (downloaded or stored)
             return image;
         }
 
@@ -284,10 +300,12 @@ namespace WLMerge
                 dataGridViewItems.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.ColumnHeader);
             }
 
+            // Make sure remarks are automatically adjusted since it will most likely be the longest one in width
             dataGridViewItems.AutoResizeColumn(ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.REMARKS), DataGridViewAutoSizeColumnMode.AllCells);
 
             UpdateTitle();
 
+            // Load any cached images. Non-cached has to be retrieved manually if wanted
             var columnIndexImage = dataGridViewItems.Columns["Image"].Index;
 
             for (int rowIndex= e.RowIndex; rowIndex < e.RowIndex + e.RowCount; rowIndex++)
@@ -296,7 +314,7 @@ namespace WLMerge
                 {
                     var itemId = (string)dataGridViewItems[ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.ITEMID), e.RowIndex].Value;
                     var color = (int)dataGridViewItems[ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.COLOR), e.RowIndex].Value;
-                    var image = GetItemImageFromBricklink(itemId, color, true);
+                    var image = GetItemImageFromBricklinkOrChache(itemId, color, true);
 
                     dataGridViewItems[columnIndexImage, rowIndex].Value = image;
                 }
@@ -517,8 +535,6 @@ namespace WLMerge
             }
         }
 
-        #endregion
-
         // Event: Button for downloading item images has been clicked 
         private void buttonDownloadImages_Click(object sender, EventArgs e)
         {
@@ -526,43 +542,43 @@ namespace WLMerge
             var formProgress = new FormProgress() { Message = "Downloading images..."};
             formProgress.DoWork += new FormProgress.DoWorkEventHandler(ImageDownloadWorker);
             formProgress.Show(this);
-
         }
 
         // Event: Worker that handle image download. For each row in dataview grid of items, get item id and color and get 
         // image for it, if it exist. It will use cache for already downloaded images.
         private void ImageDownloadWorker(FormProgress sender, DoWorkEventArgs e)
         {
-            // Get datagrid indexes of interest
-            var columnIndexImage = dataGridViewItems.Columns["Image"].Index;
-            var columnIndexItemId = dataGridViewItems.Columns["ItemId"].Index;
-            var columnIndexColor = dataGridViewItems.Columns["Color"].Index;
-            var rowsTotal = dataGridViewItems.Rows.Count;
-
             // No point in doing this if we have no data
-            if (rowsTotal <= 0)
+            if (dataGridViewItems.Rows.Count <= 0)
             {
                 return;
             }
 
+            // Get datagrid indexes of interest
+            var columnIndexImage = dataGridViewItems.Columns["Image"].Index;
+            var columnIndexItemId = dataGridViewItems.Columns["ItemId"].Index;
+            var columnIndexColor = dataGridViewItems.Columns["Color"].Index;
+
             // Get image for each row in grid
-            for (var rowIndex = 0; rowIndex < rowsTotal; rowIndex++)
+            for (var rowIndex = 0; rowIndex < dataGridViewItems.Rows.Count; rowIndex++)
             {
                 // Only update if there isn't an image for this item/row
                 if (dataGridViewItems[columnIndexImage, rowIndex].Value == null)
                 {
                     var color = (int)dataGridViewItems[columnIndexColor, rowIndex].Value;
                     var itemId = (string)dataGridViewItems[columnIndexItemId, rowIndex].Value;
-                    Image image = GetItemImageFromBricklink(itemId, color, false);
+                    Image image = GetItemImageFromBricklinkOrChache(itemId, color, false);
 
                     dataGridViewItems[columnIndexImage, rowIndex].Value = image;
                 }
 
                 // Update progress dialog with current progress
-                var message = $"Getting images {rowIndex + 1} of {rowsTotal}...";
-                var percent = ((rowIndex + 1) / (double)rowsTotal) * 100d;
+                var message = $"Getting images {rowIndex + 1} of {dataGridViewItems.Rows.Count}...";
+                var percent = ((rowIndex + 1) / (double)dataGridViewItems.Rows.Count) * 100d;
                 sender.UpdateProgress((int)percent, message);
             }
         }
+
+        #endregion
     }
 }
