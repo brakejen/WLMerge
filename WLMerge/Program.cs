@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WLMerge
@@ -219,7 +217,7 @@ namespace WLMerge
                     versionHistory = History.FirstRun;
                 }
 
-                File.WriteAllText(Path.Combine(pathToFile, VersionFile), AssemblyVersion);
+                File.WriteAllText(versionFile, AssemblyVersion);
                 return versionHistory;
             }
         }

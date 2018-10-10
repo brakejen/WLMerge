@@ -1,18 +1,9 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FormAbout.cs" company="oddballs">
-//   Oddball 
-// </copyright>
-// <summary>
-//   Defines the FormAbout type.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+﻿using System;
+using System.IO;
+using System.Windows.Forms;
 
 namespace WLMerge
 {
-    using System;
-    using System.IO;
-    using System.Windows.Forms;
-
     /// <summary>
     ///     The form about.
     /// </summary>

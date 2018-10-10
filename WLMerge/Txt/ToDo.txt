@@ -1,7 +1,8 @@
 ﻿ToDo list:
 
 BUGS
-- 
+- Progress bar does not reach 100% so when progress is fast
+- Main window loose focus after zoomed image is closed
 
 LIKELY
 - 

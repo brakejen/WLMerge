@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WLMerge
@@ -23,7 +17,6 @@ namespace WLMerge
     {
         BackgroundWorker _bgw;
 
-
         public delegate void DoWorkEventHandler(FormProgress sender, DoWorkEventArgs e);
         public event DoWorkEventHandler DoWork;
 
@@ -38,9 +31,11 @@ namespace WLMerge
             _bgw = new BackgroundWorker();
             _bgw.WorkerReportsProgress = true;
             _bgw.WorkerSupportsCancellation = false;
-            _bgw.DoWork += new System.ComponentModel.DoWorkEventHandler(_bgw_DoWork);
-            _bgw.ProgressChanged += new ProgressChangedEventHandler(_bgw_ProgressChanged);
+            _bgw.DoWork += _bgw_DoWork;
+            _bgw.ProgressChanged += _bgw_ProgressChanged;
+            _bgw.RunWorkerCompleted += _bgw_RunWorkerCompleted;
         }
+
 
         /// <summary>
         /// Optional argument for worker delegate
@@ -102,10 +97,6 @@ namespace WLMerge
                     Owner.Location.X + Owner.Width / 2 - Width / 2,
                     Owner.Location.Y + Owner.Height / 2 - Height / 2);
             }
-
-            progressBarProgress.Maximum = 100;
-            progressBarProgress.Value = progressBarProgress.Minimum = 0;
-            progressBarProgress.Step = 1;
             _bgw.RunWorkerAsync(Argument);
         }
 
@@ -119,12 +110,12 @@ namespace WLMerge
         // otherwise update progress bar.
         private void _bgw_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            if (e.ProgressPercentage >= 100)
-            {
-                Close();
-            }
-
             progressBarProgress.Value = e.ProgressPercentage;
+        }
+
+        private void _bgw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Close();
         }
     }
 }

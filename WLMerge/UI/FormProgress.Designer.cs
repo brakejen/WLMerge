@@ -50,6 +50,8 @@
             this.progressBarProgress.Location = new System.Drawing.Point(12, 49);
             this.progressBarProgress.Name = "progressBarProgress";
             this.progressBarProgress.Size = new System.Drawing.Size(308, 35);
+            this.progressBarProgress.Step = 1;
+            this.progressBarProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBarProgress.TabIndex = 1;
             // 
             // FormProgress

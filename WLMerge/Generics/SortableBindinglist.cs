@@ -1,11 +1,11 @@
-﻿namespace WLMerge
-{
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Xml.Linq;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Xml.Linq;
 
+namespace WLMerge
+{
     /// <summary>
     ///     A generic sortable list that can be data bound. It is built upon the BindingList, but with
     ///     sorting functionality added.

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -17,6 +18,7 @@ namespace WLMerge
         private int _fileCount;
         private int _pieceCount;
         private FormImage _formImage;
+        private Dictionary<string,Image> _imageList;
 
         #endregion
 
@@ -36,6 +38,9 @@ namespace WLMerge
             inventoryItemListBindingSource.DataSource = _itemList;
             // Perform a UI reset
             ResetForm();
+
+            // Create Image memory cache
+            _imageList = new Dictionary<string, Image>(2048);
         }
 
         #endregion
@@ -78,11 +83,100 @@ namespace WLMerge
                 ? $"{Program.AppName} - drag or browse file(s) to add Wanted Lists"
                 : $"{Program.AppName} - lots: {_itemList.Count}, pieces: {_pieceCount}, files: {_fileCount}";
 
+        private string ImageCachePathBase
+        {
+            get
+            {
+                return $@"{Program.AppDataFolder}\cache";
+            }
+        }
+
+        private string ImageCachePathFull(string itemId, int color)
+        {
+            return $@"{ImageCachePathBase}\{color}\{itemId}.png";
+        }
+
+        private string ImageCacheKey(string itemId, int color)
+        {
+            var key = $"{color}_{itemId}";
+            return key;
+        }
+        private string ImageCacheKey(string itemId, string color)
+        {
+            var key = $"{color}_{itemId}";
+            return key;
+        }
+
+        private Image GetItemImageFromMemoryCache(string itemId, int color)
+        {
+            try
+            {
+                var key = ImageCacheKey(itemId, color);
+
+                return _imageList[key];
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        // Download an image of an item from Bricklink. Store it in both file cache 
+        private Image DownloadImageFromBricklink(string itemId, int color, bool useFallackImage = false)
+        {
+            Image image = null;
+
+            try
+            {
+                // Path to local cache is stored in the App data folder, under cache. One dir for each color, one file for each image
+                var imageCachePath = ImageCachePathFull(itemId, color);
+
+                // No. Make sure cache dir exist first. Will create both root cache dir and color dir as needed
+                if (!Directory.Exists(Path.GetDirectoryName(imageCachePath)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(imageCachePath));
+                }
+
+                // Download image from Bricklink
+                using (WebClient wc = new WebClient())
+                {
+                    // Get image as stream of bytes; if fallback we use an image withouth color mapping
+                    var url = useFallackImage ? BricklinkItems.BricklinkItemImageUrlNoColor(itemId) : BricklinkItems.BricklinkItemImageUrl(itemId, color);
+                    byte[] data = wc.DownloadData(url);
+
+                    // Store to bitmap locally
+                    using (MemoryStream ms = new MemoryStream(data))
+                    {
+                        image = new Bitmap(ms);
+
+                        // Save to local cache for future use, if enabled
+                        image.Save(imageCachePath);
+                    }
+                }                
+            }
+            catch // regardless of error
+            {
+                // Are we using fallback image?
+                if (!useFallackImage)
+                {
+                    // No, so retry to get image but with alternate image url (ie fallback is true). Whatever that may result in, use it
+                    return DownloadImageFromBricklink(itemId, color, true);
+                }
+                else
+                {
+                    // Yes - Fallback failed, we end up here only if fallback is used and exception is raised while doing so
+                    return null;
+                }
+            }
+
+            // Image found (downloaded or stored)
+            return image;
+        }
+
         // Given an array of files (valid and complete file paths), handle them (ie load them into app)
         private void HandleXmlFiles(string[] files)
         {
-
-            _fileCount += files.Count();
+            inventoryItemListBindingSource.DataSource = null;
 
             foreach (var path in files)
             {
@@ -92,16 +186,21 @@ namespace WLMerge
                 // Check for error while reading file
                 if (items == null)
                 {
-                    MessageBox.Show($"Failed to read XML file contents of file\n{path}.\nNot a valid Bricklink Wanted List XML.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    MessageBox.Show($"Failed to read XML file contents of\n{path}.\nNot a valid Bricklink Wanted List XML.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
-                // Add the items of the Wanted List to our main list (ie merge)
-                foreach (var item in items.Items)
+                else
                 {
-                    _itemList.Insert(item);
+                    // No errors, proceed with file contents
+                    _fileCount++;
+
+                    // Add the items of the Wanted List to our main list (ie merge)
+                    foreach (var item in items.Items)
+                    {
+                        _itemList.Insert(item);
+                    }
                 }
             }
+            inventoryItemListBindingSource.DataSource = _itemList;
         }
 
         private int ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty property)
@@ -169,73 +268,49 @@ namespace WLMerge
                 dataGridViewItems[columnIndex, rowIndex].Value = newValue;
             }
         }
- 
-        // Download an image of an item from Bricklink. If useLocalCacheOnly is true it will only use any locally stored
-        // images (no network access). Any network access will store retreieved images locally for later use.
-        private Image GetItemImageFromBricklinkOrChache(string itemId, int color, bool useLocalCacheOnly, bool useFallackImage = false)
-        {
-            Image image = null;
-
-            try
-            {
-                // Path to local cache is stored in the App data folder, under cache. One dir for each color, one file for each image
-                var imageCachePath = $@"{Program.AppDataFolder}\cache\{color}\{itemId}.png";
-
-                // Do we use cache only?
-                if (useLocalCacheOnly)
-                {
-                    // Yes, use it
-                    image = File.Exists(imageCachePath) ? Bitmap.FromFile(imageCachePath) : null;
-                }
-                else
-                {
-                    // No. Make sure cache dir exist first. Will create both root cache dir and color dir as needed
-                    if (!Directory.Exists(Path.GetDirectoryName(imageCachePath)))
-                    {
-                        Directory.CreateDirectory(Path.GetDirectoryName(imageCachePath));
-                    }
-
-                    // Download image from Bricklink
-                    using (WebClient wc = new WebClient())
-                    {
-                        // Get image as stream of bytes; if fallback we use an image withouth color mapping
-                        var url = useFallackImage ? BricklinkItems.BricklinkItemImageUrlNoColor(itemId) :  BricklinkItems.BricklinkItemImageUrl(itemId, color);
-                        byte[] data = wc.DownloadData(url);
-
-                        // Store to bitmap locally
-                        using (MemoryStream ms = new MemoryStream(data))
-                        {
-                            image = new Bitmap(ms);
-
-                            // Save to local cache for future use, if enabled
-                            image.Save(imageCachePath);
-                            
-                        }
-                    }
-                }
-            }
-            catch // regardless of error
-            {
-                // Are we using fallback image?
-                if(!useFallackImage)
-                {
-                    // No, so retry to get image but with alternate image url (ie fallback is true). Whatever that may result in, use it
-                    return GetItemImageFromBricklinkOrChache(itemId, color, useLocalCacheOnly, true);
-                }
-                else
-                {
-                    // Yes - Fallback failed, we end up here only if fallback is used and exception is raised while doing so
-                    return null;
-                }
-            }
-
-            // Image found (downloaded or stored)
-            return image;
-        }
 
         #endregion
 
         #region Event handling
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+            // Fire up general progress form and assign worker event handler to it
+            var formProgress = new FormProgress() { Message = "Loading image cache..." };
+            formProgress.DoWork += new FormProgress.DoWorkEventHandler(ImageMemoryCacheLoadWorker);
+            formProgress.Show(this);
+        }
+
+        // Event: Worker that handle image download. For each row in dataview grid of items, get item id and color and get 
+        // image for it, if it exist. It will use cache for already downloaded images.
+        private void ImageMemoryCacheLoadWorker(FormProgress sender, DoWorkEventArgs e)
+        {
+            var imageFilePaths = Directory.GetFiles(ImageCachePathBase, "*.*", SearchOption.AllDirectories);
+            var i = 1;
+
+            foreach (var imageFilePath in imageFilePaths)
+            {
+                // Load image
+                var image = Bitmap.FromFile(imageFilePath);
+
+                // Calculate key 
+                var itemId = Path.GetFileNameWithoutExtension(imageFilePath);
+                var color = new DirectoryInfo(Path.GetDirectoryName(imageFilePath)).Name;
+                var key = ImageCacheKey(itemId, color);
+
+                // Add image to list
+               _imageList.Add(key, image);
+
+                // Update progress
+                var percent = (int)(100 * i / imageFilePaths.Length);
+
+                if (percent % 2 == 0)
+                {
+                    sender.UpdateProgress(percent); 
+                }
+
+                i++;
+            }
+        }
 
         // Event: rows have been removed, update counter in header accordingly
         private void _itemList_ItemRemoved(object sender, ItemRemovedEventArgs e)
@@ -291,17 +366,7 @@ namespace WLMerge
         // Event: Rows have been added to the table. Make adjustments to form and table as data have been added
         private void dataGridViewItems_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
-            if (_itemList.Count == 1)
-            {
-                // Enable buttons 
-                buttonExport.Enabled = buttonClear.Enabled = buttonDownloadImages.Enabled = checkBoxHideEmptyColumns.Enabled = true; ;
-
-                // Adjust headers just once, they will be assigned when first row is loaded
-                dataGridViewItems.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.ColumnHeader);
-            }
-
-            // Make sure remarks are automatically adjusted since it will most likely be the longest one in width
-            dataGridViewItems.AutoResizeColumn(ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.REMARKS), DataGridViewAutoSizeColumnMode.AllCells);
+            buttonExport.Enabled = buttonClear.Enabled = buttonDownloadImages.Enabled = checkBoxHideEmptyColumns.Enabled = _itemList.Count > 0; ;
 
             UpdateTitle();
 
@@ -312,13 +377,18 @@ namespace WLMerge
             {
                 if (dataGridViewItems[columnIndexImage, rowIndex].Value == null)
                 {
-                    var itemId = (string)dataGridViewItems[ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.ITEMID), e.RowIndex].Value;
-                    var color = (int)dataGridViewItems[ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.COLOR), e.RowIndex].Value;
-                    var image = GetItemImageFromBricklinkOrChache(itemId, color, true);
+                    var itemId = (string)dataGridViewItems[ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.ITEMID), rowIndex].Value;
+                    var color = (int)dataGridViewItems[ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.COLOR), rowIndex].Value;
+                    var image = GetItemImageFromMemoryCache(itemId, color);
 
                     dataGridViewItems[columnIndexImage, rowIndex].Value = image;
                 }
             }
+            // Make sure remarks are automatically adjusted since it will most likely be the longest one in width
+            dataGridViewItems.AutoResizeColumn(ItemPropertyToDatagridColumnId(InventoryItem.ItemProperty.REMARKS), DataGridViewAutoSizeColumnMode.AllCells);
+
+            // Adjust headers just once, they will be assigned when first row is loaded
+            dataGridViewItems.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.ColumnHeader);
         }
 
         // Event: button to exit application have been clicked
@@ -418,6 +488,7 @@ namespace WLMerge
                 }
             }
         }
+
 
         // Event: the checkbox to hide/show empty columns have been clicked. React accordingly
         private void checkBoxHideEmptyColumns_CheckedChanged(object sender, EventArgs e) => ToggleEmptyColumnsVisible(((CheckBox)sender).Checked);
@@ -567,7 +638,7 @@ namespace WLMerge
                 {
                     var color = (int)dataGridViewItems[columnIndexColor, rowIndex].Value;
                     var itemId = (string)dataGridViewItems[columnIndexItemId, rowIndex].Value;
-                    Image image = GetItemImageFromBricklinkOrChache(itemId, color, false);
+                    Image image = DownloadImageFromBricklink(itemId, color);
 
                     dataGridViewItems[columnIndexImage, rowIndex].Value = image;
                 }

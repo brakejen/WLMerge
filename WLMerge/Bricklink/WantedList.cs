@@ -2,7 +2,6 @@
 using System.IO;
 using System.ComponentModel;
 using System.Xml.Serialization;
-using System.Runtime.CompilerServices;
 
 namespace WLMerge
 {
@@ -50,6 +49,7 @@ namespace WLMerge
                 try
                 {
                     var inventory = (Inventory)(serializer.Deserialize(reader));
+
                     return inventory;
                 }
                 catch (Exception)
@@ -87,42 +87,81 @@ namespace WLMerge
             WANTEDLISTID,
         }
 
+        // Not part of Bricklink Wanted List data
         [XmlIgnore]
         public System.Drawing.Image Image { get; set; }
 
+        /// <summary>
+        /// Wanted List property "ITEMTYPE"
+        /// </summary>
         [XmlElement("ITEMTYPE")]
         public string ItemType { get; set; }
 
+        /// <summary>
+        /// Wanted List property "ITEMID"
+        /// </summary>
         [XmlElement("ITEMID")]
         public string ItemId { get; set; }
 
+        /// <summary>
+        /// Wanted List property "COLOR"
+        /// </summary>
         [XmlElement("COLOR")]
         public int Color { get; set; }
 
+        /// <summary>
+        /// Wanted List property "MAXPRICE"
+        /// </summary>
         [XmlElement("MAXPRICE")]
         public decimal MaxPrice { get; set; }
 
+        /// <summary>
+        /// Wanted List property "MINQTY"
+        /// </summary>
         [XmlElement("MINQTY")]
         public int MinQty { get; set; }
 
+        /// <summary>
+        /// Wanted List property "QTYFILLED"
+        /// </summary>
         [XmlElement("QTYFILLED")]
         public int QtyFilled { get; set; }
 
+        /// <summary>
+        /// Wanted List property "CONDITION"
+        /// </summary>
         [XmlElement("COMDITION")]
         public string Condition { get; set; }
 
+        /// <summary>
+        /// Wanted List property "ITEMTYPE"
+        /// </summary>
         [XmlElement("REMARKS")] 
         public string Remarks { get; set; }
 
+        /// <summary>
+        /// Wanted List property "NOTIFY"
+        /// </summary>
         [XmlElement("NOTIFY")]
         public string Notify { get; set; }
 
+        /// <summary>
+        /// Wanted List property "WANTEDSHOW"
+        /// </summary>
         [XmlElement("WANTEDSHOW")]
         public string WantedShow { get; set; }
 
+        /// <summary>
+        /// Wanted List property "WANTEDLISTID"
+        /// </summary>
         [XmlElement("WANTEDLISTID")]
         public string WantedListId { get; set; }
 
+        /// <summary>
+        /// Return the underlying type of a Wanted List property, ie ItemProperty.
+        /// </summary>
+        /// <param name="itemProperty">The property to evaluate</param>
+        /// <returns></returns>
         public static Type ItemPropertyType(ItemProperty itemProperty)
         {
             switch (itemProperty)
