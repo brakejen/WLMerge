@@ -130,10 +130,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="Properties\DataSources\INVENTORYITEM.datasource" />
     <None Include="Properties\DataSources\InventoryItemList.datasource" />
-    <None Include="Properties\DataSources\InventoryItemList1.datasource" />
-    <None Include="Properties\DataSources\InventoryItemList11.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

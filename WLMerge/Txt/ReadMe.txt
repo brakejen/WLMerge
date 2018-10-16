@@ -1,7 +1,7 @@
 ﻿Welcome to WLMerge!
 
 INTRODUCTION
-This application can be used to merge Bricklink Wanted Lists. While Bricklink supports this (by uploading lists to existing ones), it won't allow users to perform bulk operations on values. This is the main purpose of this application.
+This application can be used to merge Bricklink Wanted Lists. While Bricklink supports this (by uploading lists to existing ones), it won't allow users to perform bulk operations on properties of a Wanted List (like multiplying piece count / Min Qty with a factor). This application supports some simple builk operations on Wanted Lists in addition to merge functionality.
 
 USAGE
 Most controls in the main window have tool tips. Hover and get explanation. A few pointers:
@@ -11,8 +11,9 @@ Most controls in the main window have tool tips. Hover and get explanation. A fe
 - There's currently no save. Closing the application will loose items in list. 
 - Rows can be deleted, but not added. Columns are fixed.
 - Some columns are read only, hover over title to find out which ones.
-- Columns that can be edited support single cell editing (click) or column wide editing (right click).
+- Columns that can be edited support single cell editing (click) or column editing (right click).
 - Sort rows by click column name for wanted sorting key.
+- Export result to clipbook for save or upload to Bricklink (instructions in app)
 
 LICENSE 
 Free, no strings attached. 

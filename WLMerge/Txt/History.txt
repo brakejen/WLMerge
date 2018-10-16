@@ -1,4 +1,9 @@
-﻿2018-10-10
+﻿2018-10-16
+1.3.3
+ - Text updates mainly
+ - Error while transforming/setting values fixed (error introduced in 1.3.0)
+
+2018-10-10
 1.3.2
  - Wrong behaviour if trying to read non Wanted List XML
  - Optimization of UI when loading list of items
